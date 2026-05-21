@@ -14,9 +14,11 @@ public class PickaxeGridManager : MonoBehaviour
     [SerializeField] private RectTransform pickaxeContainer;
     [SerializeField] private GameObject pickaxePrefabRoot;
     [SerializeField] private MergeEffect mergeEffectPrefab;
+    [SerializeField] private GameObject miningAttackTemplate;
     [SerializeField] private float slotSize = 170f;
 
     public Transform DragLayer => dragLayer;
+    public GameObject MiningAttackTemplate => miningAttackTemplate;
     public int MaxLevelOnGrid { get; private set; } = 0;
     public int HighestEverReached { get; private set; } = 1;
 
