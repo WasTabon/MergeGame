@@ -14,6 +14,8 @@ public class BlocksRowManager : MonoBehaviour
     [SerializeField] private RectTransform effectsLayer;
     [SerializeField] private float respawnDelay = 0.35f;
     [SerializeField] private int coinsBurstCount = 6;
+    [SerializeField] private ZoneCompletePopup zoneCompletePopup;
+    [SerializeField] private int blocksPerZone = 10;
 
     private const string TOTAL_DESTROYED_KEY = "total_blocks_destroyed";
 
@@ -105,6 +107,11 @@ public class BlocksRowManager : MonoBehaviour
 
         totalDestroyed++;
         PlayerPrefs.SetInt(TOTAL_DESTROYED_KEY, totalDestroyed);
+
+        if (totalDestroyed > 0 && totalDestroyed % blocksPerZone == 0 && zoneCompletePopup != null)
+        {
+            DOVirtual.DelayedCall(0.8f, () => zoneCompletePopup.ShowReward(1), false);
+        }
 
         DOVirtual.DelayedCall(respawnDelay, () => SpawnBlockAt(index));
     }

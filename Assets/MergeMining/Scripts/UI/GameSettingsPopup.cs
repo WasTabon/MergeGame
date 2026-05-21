@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class SettingsPopup : BasePopup
+public class GameSettingsPopup : BasePopup
 {
     [SerializeField] private Toggle sfxToggle;
     [SerializeField] private Toggle musicToggle;
@@ -10,20 +10,24 @@ public class SettingsPopup : BasePopup
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Button closeButton;
-    [SerializeField] private Button restartProgressButton;
     [SerializeField] private TextMeshProUGUI titleText;
-    [SerializeField] private ConfirmPopup confirmPopup;
+
+    private BasePopup returnPopup;
 
     protected override void Awake()
     {
         base.Awake();
-        closeButton.onClick.AddListener(Hide);
-        restartProgressButton.onClick.AddListener(OnRestartProgress);
+        closeButton.onClick.AddListener(OnClose);
         sfxToggle.onValueChanged.AddListener(OnSfxToggle);
         musicToggle.onValueChanged.AddListener(OnMusicToggle);
         hapticToggle.onValueChanged.AddListener(OnHapticToggle);
         sfxSlider.onValueChanged.AddListener(OnSfxSlider);
         musicSlider.onValueChanged.AddListener(OnMusicSlider);
+    }
+
+    public void SetReturnPopup(BasePopup popup)
+    {
+        returnPopup = popup;
     }
 
     protected override void OnShow()
@@ -41,40 +45,19 @@ public class SettingsPopup : BasePopup
         }
     }
 
+    private void OnClose()
+    {
+        Hide();
+        if (returnPopup != null)
+        {
+            returnPopup.Show();
+            returnPopup = null;
+        }
+    }
+
     private void OnSfxToggle(bool on) { if (SoundManager.Instance != null) SoundManager.Instance.SetSfxMuted(!on); }
     private void OnMusicToggle(bool on) { if (SoundManager.Instance != null) SoundManager.Instance.SetMusicMuted(!on); }
     private void OnHapticToggle(bool on) { if (HapticManager.Instance != null) HapticManager.Instance.SetEnabled(on); }
     private void OnSfxSlider(float v) { if (SoundManager.Instance != null) SoundManager.Instance.SetSfxVolume(v); }
     private void OnMusicSlider(float v) { if (SoundManager.Instance != null) SoundManager.Instance.SetMusicVolume(v); }
-
-    private void OnRestartProgress()
-    {
-        if (confirmPopup == null)
-        {
-            PlayerPrefs.DeleteAll();
-            PlayerPrefs.Save();
-            Debug.Log("Progress restarted (no confirm popup wired).");
-            return;
-        }
-
-        Hide();
-        confirmPopup.Setup(
-            "RESET PROGRESS?",
-            "All coins, gems and pickaxes will be erased. This cannot be undone.",
-            "CANCEL",
-            "RESET",
-            UIColors.RED,
-            () =>
-            {
-                PlayerPrefs.DeleteAll();
-                PlayerPrefs.Save();
-                Debug.Log("Progress restarted. Reload scene to see effect.");
-                if (TransitionManager.Instance != null)
-                {
-                    TransitionManager.Instance.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-                }
-            }
-        );
-        confirmPopup.Show();
-    }
 }
