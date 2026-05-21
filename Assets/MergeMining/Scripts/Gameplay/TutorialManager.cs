@@ -13,10 +13,9 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private RectTransform blocksRowRef;
 
     private TutorialStep currentStep = TutorialStep.None;
-    private int mergeCountAtStart = 0;
-    private int blockTapCountAtStart = 0;
     private int blockTapsSeen = 0;
     private bool tutorialDone;
+    private bool startRequested = false;
 
     public event Action<TutorialStep> OnStepChanged;
     public bool IsActive => !tutorialDone && currentStep != TutorialStep.None && currentStep != TutorialStep.Done;
@@ -31,7 +30,7 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         if (tutorialDone) return;
-        StartTutorial();
+        TryStartIfReady();
     }
 
     private void OnEnable()
@@ -48,9 +47,26 @@ public class TutorialManager : MonoBehaviour
         if (PickaxeGridManager.Instance != null) PickaxeGridManager.Instance.OnMerged -= OnMerged;
     }
 
-    private void StartTutorial()
+    public void NotifyOtherFlowEnded()
     {
+        if (tutorialDone) return;
+        if (startRequested) return;
+        DG.Tweening.DOVirtual.DelayedCall(0.5f, () => TryStartIfReady(), true);
+    }
+
+    private void TryStartIfReady()
+    {
+        if (tutorialDone) return;
+        if (startRequested) return;
+        if (IsBlocked()) return;
+        startRequested = true;
         GoToStep(TutorialStep.TapShop);
+    }
+
+    private bool IsBlocked()
+    {
+        if (DailyRewardManager.Instance != null && DailyRewardManager.Instance.CanClaimToday()) return true;
+        return false;
     }
 
     public void NotifyShopPurchase()

@@ -19,6 +19,12 @@ public class TutorialOverlay : MonoBehaviour
     private void Awake()
     {
         myRoot = transform as RectTransform;
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+        }
         gameObject.SetActive(false);
         if (skipButton != null) skipButton.onClick.AddListener(OnSkip);
     }
@@ -26,8 +32,13 @@ public class TutorialOverlay : MonoBehaviour
     public void ShowStep(TutorialStep step, RectTransform target)
     {
         gameObject.SetActive(true);
-        canvasGroup.alpha = 0f;
-        canvasGroup.DOFade(1f, 0.3f).SetUpdate(true);
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+            canvasGroup.DOFade(1f, 0.3f).SetUpdate(true);
+        }
 
         string text = GetInstructionText(step);
         if (instructionText != null) instructionText.text = text;
@@ -130,7 +141,14 @@ public class TutorialOverlay : MonoBehaviour
     {
         ringTween?.Kill();
         handTween?.Kill();
-        canvasGroup.DOFade(0f, 0.3f).SetUpdate(true).OnComplete(() => gameObject.SetActive(false));
+        if (canvasGroup != null)
+        {
+            canvasGroup.DOFade(0f, 0.3f).SetUpdate(true).OnComplete(() => gameObject.SetActive(false));
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private string GetInstructionText(TutorialStep step)

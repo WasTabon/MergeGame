@@ -156,6 +156,8 @@ public class PickaxeGridManager : MonoBehaviour
                     ZoneManager.Instance.CheckUnlock(HighestEverReached);
                 }
 
+                if (AchievementManager.Instance != null) AchievementManager.Instance.CheckAll();
+
                 OnMerged?.Invoke(newLevel);
                 OnGridChanged?.Invoke();
             });

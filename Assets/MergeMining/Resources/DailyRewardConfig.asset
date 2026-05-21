@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8353ae7481ee987488e4550e90999f0b, type: 3}
+  m_Name: DailyRewardConfig
+  m_EditorClassIdentifier: 
+  entries:
+  - day: 1
+    kind: 0
+    amount: 100
+    pickaxeLevel: 1
+  - day: 2
+    kind: 0
+    amount: 200
+    pickaxeLevel: 1
+  - day: 3
+    kind: 1
+    amount: 3
+    pickaxeLevel: 1
+  - day: 4
+    kind: 0
+    amount: 500
+    pickaxeLevel: 1
+  - day: 5
+    kind: 2
+    amount: 100
+    pickaxeLevel: 3
+  - day: 6
+    kind: 1
+    amount: 10
+    pickaxeLevel: 1
+  - day: 7
+    kind: 1
+    amount: 25
+    pickaxeLevel: 1

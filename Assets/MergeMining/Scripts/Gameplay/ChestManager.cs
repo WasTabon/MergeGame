@@ -113,6 +113,8 @@ public class ChestManager : MonoBehaviour
         ApplyRewards(rewards);
 
         if (chestOpeningPopup != null) chestOpeningPopup.ShowChest(chest, rewards);
+
+        if (AchievementManager.Instance != null) AchievementManager.Instance.IncrementChestsOpened();
     }
 
     private List<GeneratedChestReward> GenerateRewards(ChestTypeData chest)

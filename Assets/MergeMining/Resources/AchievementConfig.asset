@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69d8f93d0f1331d4ba067a4c8d8ede9b, type: 3}
+  m_Name: AchievementConfig
+  m_EditorClassIdentifier: 
+  achievements:
+  - id: first_blocks_10
+    title: Beginner Miner
+    description: Destroy 10 blocks
+    condition: 0
+    target: 10
+    gemsReward: 2
+  - id: blocks_100
+    title: Persistent Miner
+    description: Destroy 100 blocks
+    condition: 0
+    target: 100
+    gemsReward: 5
+  - id: blocks_500
+    title: Block Crusher
+    description: Destroy 500 blocks
+    condition: 0
+    target: 500
+    gemsReward: 10
+  - id: pickaxes_5
+    title: Stocking Up
+    description: Buy 5 pickaxes
+    condition: 1
+    target: 5
+    gemsReward: 2
+  - id: pickaxes_50
+    title: Big Spender
+    description: Buy 50 pickaxes
+    condition: 1
+    target: 50
+    gemsReward: 10
+  - id: merge_lvl5
+    title: Skilled Merger
+    description: Reach pickaxe level 5
+    condition: 2
+    target: 5
+    gemsReward: 3
+  - id: merge_lvl10
+    title: Merge Master
+    description: Reach pickaxe level 10
+    condition: 2
+    target: 10
+    gemsReward: 10
+  - id: zones_3
+    title: Explorer
+    description: Unlock 3 zones
+    condition: 3
+    target: 3
+    gemsReward: 5
+  - id: chests_10
+    title: Treasure Hunter
+    description: Open 10 chests
+    condition: 4
+    target: 10
+    gemsReward: 5
+  - id: boosters_5
+    title: Power User
+    description: Use 5 boosters
+    condition: 5
+    target: 5
+    gemsReward: 3

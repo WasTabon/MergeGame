@@ -140,6 +140,8 @@ public class BlocksRowManager : MonoBehaviour
 
         if (ChestManager.Instance != null) ChestManager.Instance.RegisterBlockDestroyed();
 
+        if (AchievementManager.Instance != null) AchievementManager.Instance.CheckAll();
+
         DOVirtual.DelayedCall(respawnDelay, () => SpawnBlockAt(index));
     }
 

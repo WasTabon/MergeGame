@@ -84,6 +84,7 @@ public class BoosterManager : MonoBehaviour
         if (type == BoosterType.InstantDestroy)
         {
             ActivateInstantDestroy();
+            if (AchievementManager.Instance != null) AchievementManager.Instance.IncrementBoostersUsed();
             return true;
         }
 
@@ -98,6 +99,8 @@ public class BoosterManager : MonoBehaviour
         }
 
         if (type == BoosterType.AutoMerge) autoMergeTimer = 0.5f;
+
+        if (AchievementManager.Instance != null) AchievementManager.Instance.IncrementBoostersUsed();
 
         return true;
     }

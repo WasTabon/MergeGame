@@ -70,13 +70,16 @@ public class TransitionManager : MonoBehaviour
         isTransitioning = true;
         canvasGroup.blocksRaycasts = true;
 
-        yield return canvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.InQuad).WaitForCompletion();
+        Time.timeScale = 1f;
+
+        yield return canvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.InQuad).SetUpdate(true).WaitForCompletion();
 
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         while (!op.isDone) yield return null;
 
-        yield return canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.OutQuad).WaitForCompletion();
+        yield return canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.OutQuad).SetUpdate(true).WaitForCompletion();
 
+        canvasGroup.alpha = 0f;
         canvasGroup.blocksRaycasts = false;
         isTransitioning = false;
     }
