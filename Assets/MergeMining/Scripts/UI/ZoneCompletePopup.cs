@@ -12,6 +12,9 @@ public class ZoneCompletePopup : BasePopup
     [SerializeField] private RectTransform gemIcon;
     [SerializeField] private Button continueButton;
 
+    private int pendingGems;
+    private bool gemsAlreadyAdded;
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,7 +31,8 @@ public class ZoneCompletePopup : BasePopup
         if (completedZoneNameText != null) completedZoneNameText.text = completedName.ToUpper() + " COMPLETED";
         if (nextZoneNameText != null) nextZoneNameText.text = "NEXT: " + nextName.ToUpper();
         if (rewardText != null) rewardText.text = "+" + gemsReward;
-        if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddGems(gemsReward);
+        pendingGems = gemsReward;
+        gemsAlreadyAdded = false;
         Show();
     }
 
@@ -51,6 +55,18 @@ public class ZoneCompletePopup : BasePopup
     private void OnContinue()
     {
         if (gemIcon != null) gemIcon.DOKill();
+
+        if (!gemsAlreadyAdded && FlyEffectSpawner.Instance != null && gemIcon != null)
+        {
+            gemsAlreadyAdded = true;
+            FlyEffectSpawner.Instance.FlyGems(gemIcon.position, pendingGems, 4);
+        }
+        else if (!gemsAlreadyAdded)
+        {
+            gemsAlreadyAdded = true;
+            if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddGems(pendingGems);
+        }
+
         Hide();
     }
 }
