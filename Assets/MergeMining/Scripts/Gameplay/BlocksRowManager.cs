@@ -132,8 +132,9 @@ public class BlocksRowManager : MonoBehaviour
 
         if (HapticManager.Instance != null) HapticManager.Instance.Medium();
 
-        SpawnCoinBurst(block.RectTransform.position, block.RewardCoins);
-
+        float rewardMult = BoosterManager.Instance != null ? BoosterManager.Instance.RewardsMultiplier : 1f;
+        int finalReward = Mathf.RoundToInt(block.RewardCoins * rewardMult);
+        SpawnCoinBurst(block.RectTransform.position, finalReward);
         totalDestroyed++;
         PlayerPrefs.SetInt(TOTAL_DESTROYED_KEY, totalDestroyed);
 

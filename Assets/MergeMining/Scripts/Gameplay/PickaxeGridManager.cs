@@ -172,4 +172,33 @@ public class PickaxeGridManager : MonoBehaviour
     }
 
     public int GetMaxLevelOnGrid() => MaxLevelOnGrid;
+
+    public bool TryAutoMergeOneRandom()
+    {
+        List<Pickaxe> allPickaxes = new List<Pickaxe>();
+        foreach (var s in slots)
+        {
+            if (!s.IsEmpty) allPickaxes.Add(s.CurrentPickaxe);
+        }
+
+        Dictionary<int, List<Pickaxe>> byLevel = new Dictionary<int, List<Pickaxe>>();
+        foreach (var p in allPickaxes)
+        {
+            if (p.Level >= PickaxeConfigProvider.Config.MaxLevel) continue;
+            if (!byLevel.ContainsKey(p.Level)) byLevel[p.Level] = new List<Pickaxe>();
+            byLevel[p.Level].Add(p);
+        }
+
+        List<int> mergeable = new List<int>();
+        foreach (var kvp in byLevel) if (kvp.Value.Count >= 2) mergeable.Add(kvp.Key);
+        if (mergeable.Count == 0) return false;
+
+        int chosenLevel = mergeable[UnityEngine.Random.Range(0, mergeable.Count)];
+        List<Pickaxe> pair = byLevel[chosenLevel];
+        Pickaxe source = pair[0];
+        Pickaxe target = pair[1];
+
+        DoMerge(source, target);
+        return true;
+    }
 }
