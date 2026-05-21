@@ -99,6 +99,8 @@ public class ShopController : MonoBehaviour
             priceIcon.DOPunchScale(Vector3.one * 0.3f, 0.3f, 6, 0.5f);
         }
 
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.shopBuy);
+
         RefreshInteractable();
     }
 

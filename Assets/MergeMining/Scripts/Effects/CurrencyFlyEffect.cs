@@ -38,6 +38,7 @@ public class CurrencyFlyEffect : MonoBehaviour
                 else CurrencyManager.Instance.AddGems(amount);
             }
             if (HapticManager.Instance != null) HapticManager.Instance.Light();
+            if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.coinTick, 0.4f, Random.Range(0.95f, 1.1f));
             Destroy(gameObject);
         });
     }

@@ -50,6 +50,7 @@ public class MiningAttack : MonoBehaviour
         if (targetBlock != null && targetBlock.IsAlive)
         {
             targetBlock.TakeDamage(damage);
+            if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.miningHit, 0.6f, Random.Range(0.85f, 1.15f));
         }
 
         rt.DOScale(0f, 0.1f).SetEase(Ease.InQuad).OnComplete(() => Destroy(gameObject));

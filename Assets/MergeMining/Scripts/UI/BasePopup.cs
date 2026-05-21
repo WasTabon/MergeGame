@@ -39,6 +39,8 @@ public class BasePopup : MonoBehaviour
         backdrop.DOFade(backdropAlpha, animDuration).SetEase(Ease.OutQuad).SetUpdate(true);
         content.DOScale(1f, animDuration).SetEase(Ease.OutBack).SetUpdate(true);
 
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.popupOpen, 0.6f);
+
         OnShow();
     }
 
@@ -56,6 +58,8 @@ public class BasePopup : MonoBehaviour
         backdrop.DOFade(0f, animDuration).SetEase(Ease.InQuad).SetUpdate(true);
         content.DOScale(0f, animDuration).SetEase(Ease.InBack).SetUpdate(true)
             .OnComplete(() => gameObject.SetActive(false));
+
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.popupClose, 0.5f);
     }
 
     protected virtual void OnShow() { }

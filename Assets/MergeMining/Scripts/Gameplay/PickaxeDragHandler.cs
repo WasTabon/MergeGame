@@ -44,6 +44,7 @@ public class PickaxeDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
         transform.DOScale(originalScale * pickupScale, 0.1f).SetEase(Ease.OutQuad);
 
         if (HapticManager.Instance != null) HapticManager.Instance.Light();
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.pickaxePickup);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -85,6 +86,7 @@ public class PickaxeDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
         }
 
         PickaxeGridManager.Instance.MovePickaxeToSlot(pickaxe, targetSlot, moveDuration);
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.pickaxeDrop);
     }
 
     private PickaxeSlot FindSlotUnderPointer(PointerEventData eventData)

@@ -85,6 +85,7 @@ public class BoosterManager : MonoBehaviour
         {
             ActivateInstantDestroy();
             if (AchievementManager.Instance != null) AchievementManager.Instance.IncrementBoostersUsed();
+            if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.boosterActivate);
             return true;
         }
 
@@ -101,6 +102,8 @@ public class BoosterManager : MonoBehaviour
         if (type == BoosterType.AutoMerge) autoMergeTimer = 0.5f;
 
         if (AchievementManager.Instance != null) AchievementManager.Instance.IncrementBoostersUsed();
+
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.boosterActivate);
 
         return true;
     }

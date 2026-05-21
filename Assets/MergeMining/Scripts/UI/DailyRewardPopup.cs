@@ -56,6 +56,8 @@ public class DailyRewardPopup : BasePopup
 
     protected override void OnShow()
     {
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.dailyReward);
+
         if (rewardIcon != null)
         {
             rewardIcon.localScale = Vector3.zero;

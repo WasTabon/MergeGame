@@ -65,6 +65,7 @@ public class ChestOpeningPopup : BasePopup
         s.AppendCallback(() =>
         {
             if (HapticManager.Instance != null) HapticManager.Instance.Medium();
+            if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.chestOpen);
         });
 
         s.AppendInterval(0.1f);

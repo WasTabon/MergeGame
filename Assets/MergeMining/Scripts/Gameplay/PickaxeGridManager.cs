@@ -23,6 +23,7 @@ public class PickaxeGridManager : MonoBehaviour
     public int HighestEverReached { get; private set; } = 1;
 
     private const string HIGHEST_REACHED_KEY = "highest_pickaxe_level";
+    private const string GRID_SAVE_KEY = "grid_save_json";
 
     public event Action<Pickaxe> OnPickaxeAdded;
     public event Action<int> OnMerged;
@@ -36,7 +37,52 @@ public class PickaxeGridManager : MonoBehaviour
 
     private void Start()
     {
-        SpawnInitialIfEmpty();
+        if (!TryLoadGrid())
+        {
+            SpawnInitialIfEmpty();
+        }
+    }
+
+    private bool TryLoadGrid()
+    {
+        string raw = PlayerPrefs.GetString(GRID_SAVE_KEY, "");
+        if (string.IsNullOrEmpty(raw)) return false;
+
+        GridSaveData data;
+        try { data = JsonUtility.FromJson<GridSaveData>(raw); }
+        catch { return false; }
+
+        if (data == null || data.entries == null || data.entries.Count == 0) return false;
+
+        foreach (var entry in data.entries)
+        {
+            PickaxeSlot slot = FindSlot(entry.row, entry.col);
+            if (slot == null) continue;
+            if (!slot.IsEmpty) continue;
+            Pickaxe p = CreatePickaxe(entry.level, slot);
+            slot.SetPickaxe(p);
+            p.CurrentSlot = slot;
+        }
+        UpdateMaxLevel();
+        return true;
+    }
+
+    private PickaxeSlot FindSlot(int row, int col)
+    {
+        foreach (var s in slots) if (s.Row == row && s.Col == col) return s;
+        return null;
+    }
+
+    public void SaveGrid()
+    {
+        GridSaveData data = new GridSaveData();
+        foreach (var s in slots)
+        {
+            if (s.IsEmpty || s.CurrentPickaxe == null) continue;
+            data.entries.Add(new GridPickaxeEntry { row = s.Row, col = s.Col, level = s.CurrentPickaxe.Level });
+        }
+        string json = JsonUtility.ToJson(data);
+        PlayerPrefs.SetString(GRID_SAVE_KEY, json);
     }
 
     private void SpawnInitialIfEmpty()
@@ -44,7 +90,6 @@ public class PickaxeGridManager : MonoBehaviour
         bool hasAny = false;
         foreach (var s in slots) if (!s.IsEmpty) { hasAny = true; break; }
         if (hasAny) return;
-        if (PlayerPrefs.GetInt("starter_pickaxes_given", 0) == 1) return;
 
         AddPickaxe(1);
         AddPickaxe(1);
@@ -78,6 +123,7 @@ public class PickaxeGridManager : MonoBehaviour
         UpdateMaxLevel();
         OnPickaxeAdded?.Invoke(p);
         OnGridChanged?.Invoke();
+        SaveGrid();
         return p;
     }
 
@@ -110,6 +156,7 @@ public class PickaxeGridManager : MonoBehaviour
         p.transform.DOScale(Vector3.one, duration).SetEase(Ease.OutBack);
 
         OnGridChanged?.Invoke();
+        SaveGrid();
     }
 
     public void DoMerge(Pickaxe source, Pickaxe target)
@@ -143,6 +190,7 @@ public class PickaxeGridManager : MonoBehaviour
                 }
 
                 if (HapticManager.Instance != null) HapticManager.Instance.Medium();
+                if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.merge);
 
                 UpdateMaxLevel();
                 if (newLevel > HighestEverReached)
@@ -160,6 +208,7 @@ public class PickaxeGridManager : MonoBehaviour
 
                 OnMerged?.Invoke(newLevel);
                 OnGridChanged?.Invoke();
+                SaveGrid();
             });
     }
 
@@ -171,6 +220,16 @@ public class PickaxeGridManager : MonoBehaviour
             if (!s.IsEmpty && s.CurrentPickaxe.Level > max) max = s.CurrentPickaxe.Level;
         }
         MaxLevelOnGrid = max;
+    }
+
+    private void OnApplicationPause(bool paused)
+    {
+        if (paused) SaveGrid();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveGrid();
     }
 
     public int GetMaxLevelOnGrid() => MaxLevelOnGrid;

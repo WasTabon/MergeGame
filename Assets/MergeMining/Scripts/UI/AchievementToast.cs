@@ -50,6 +50,8 @@ public class AchievementToast : MonoBehaviour
             canvasGroup.DOFade(1f, 0.3f).SetUpdate(true);
         }
 
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.achievementUnlock);
+
         DOVirtual.DelayedCall(showDuration, FadeOut, false);
     }
 

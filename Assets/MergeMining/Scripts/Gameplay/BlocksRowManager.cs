@@ -131,6 +131,7 @@ public class BlocksRowManager : MonoBehaviour
         }
 
         if (HapticManager.Instance != null) HapticManager.Instance.Medium();
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.blockExplode);
 
         float rewardMult = BoosterManager.Instance != null ? BoosterManager.Instance.RewardsMultiplier : 1f;
         int finalReward = Mathf.RoundToInt(block.RewardCoins * rewardMult);
@@ -182,6 +183,7 @@ public class BlocksRowManager : MonoBehaviour
             {
                 if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddCoins(amount);
                 if (HapticManager.Instance != null && amount == per + remainder) HapticManager.Instance.Light();
+                if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.coinTick, 0.35f, Random.Range(0.9f, 1.15f));
                 Destroy(coin);
             });
         }

@@ -2100,6 +2100,7 @@ GameObject:
   - component: {fileID: 121471145}
   - component: {fileID: 121471144}
   - component: {fileID: 121471143}
+  - component: {fileID: 121471150}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -2196,6 +2197,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &121471150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121471142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb53645b5c69e44d844fafab7d08f43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiClick: {fileID: 0}
+  shopBuy: {fileID: 0}
+  pickaxePickup: {fileID: 0}
+  pickaxeDrop: {fileID: 0}
+  merge: {fileID: 0}
+  miningHit: {fileID: 0}
+  blockExplode: {fileID: 0}
+  coinTick: {fileID: 0}
+  zoneComplete: {fileID: 0}
+  chestOpen: {fileID: 0}
+  boosterActivate: {fileID: 0}
+  achievementUnlock: {fileID: 0}
+  dailyReward: {fileID: 0}
+  popupOpen: {fileID: 0}
+  popupClose: {fileID: 0}
 --- !u!21 &131047164
 Material:
   serializedVersion: 8
@@ -5432,6 +5460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 342655322}
   - component: {fileID: 342655321}
+  - component: {fileID: 342655323}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5505,6 +5534,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &342655323
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342655320}
+  m_Enabled: 1
 --- !u!1 &346116378
 GameObject:
   m_ObjectHideFlags: 0

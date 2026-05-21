@@ -45,9 +45,11 @@ public class ButtonAnimator : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     private void OnClick()
     {
-        if (SoundManager.Instance != null && clickClip != null)
+        if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySFX(clickClip);
+            AudioClip clip = clickClip;
+            if (clip == null && SfxLibrary.Instance != null) clip = SfxLibrary.Instance.uiClick;
+            if (clip != null) SoundManager.Instance.PlaySFX(clip);
         }
         if (playHaptic && HapticManager.Instance != null)
         {

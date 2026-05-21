@@ -38,6 +38,8 @@ public class ZoneCompletePopup : BasePopup
 
     protected override void OnShow()
     {
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.zoneComplete);
+
         if (gemIcon != null)
         {
             gemIcon.localScale = Vector3.zero;
