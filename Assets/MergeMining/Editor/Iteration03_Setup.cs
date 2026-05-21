@@ -380,7 +380,7 @@ public static class Iteration03_Setup
         };
 
         data.types = new List<BlockTypeData> { stone, iron, gold, crystal };
-        data.sequence = new List<int> { 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 1, 2 };
+        data.defaultSequence = new List<int> { 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 1, 2 };
         data.baseHP = 10f;
         data.hpGrowth = 1.18f;
         data.baseReward = 3;

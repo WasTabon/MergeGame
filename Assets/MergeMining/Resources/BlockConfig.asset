@@ -37,7 +37,7 @@ MonoBehaviour:
     darkColor: {r: 0.18, g: 0.45, b: 0.7, a: 1}
     hpMultiplier: 3
     rewardMultiplier: 5
-  sequence: 000000000000000001000000000000000000000001000000020000000000000001000000000000000100000002000000
+  defaultSequence: 
   baseHP: 10
   hpGrowth: 1.18
   baseReward: 3

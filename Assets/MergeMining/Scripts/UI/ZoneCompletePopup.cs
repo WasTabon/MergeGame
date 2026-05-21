@@ -6,6 +6,8 @@ using DG.Tweening;
 public class ZoneCompletePopup : BasePopup
 {
     [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private TextMeshProUGUI completedZoneNameText;
+    [SerializeField] private TextMeshProUGUI nextZoneNameText;
     [SerializeField] private TextMeshProUGUI rewardText;
     [SerializeField] private RectTransform gemIcon;
     [SerializeField] private Button continueButton;
@@ -18,7 +20,14 @@ public class ZoneCompletePopup : BasePopup
 
     public void ShowReward(int gemsReward)
     {
-        rewardText.text = "+" + gemsReward;
+        ShowZoneCompleted("Zone", gemsReward, "Next");
+    }
+
+    public void ShowZoneCompleted(string completedName, int gemsReward, string nextName)
+    {
+        if (completedZoneNameText != null) completedZoneNameText.text = completedName.ToUpper() + " COMPLETED";
+        if (nextZoneNameText != null) nextZoneNameText.text = "NEXT: " + nextName.ToUpper();
+        if (rewardText != null) rewardText.text = "+" + gemsReward;
         if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddGems(gemsReward);
         Show();
     }

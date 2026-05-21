@@ -15,7 +15,7 @@ public class BlocksRowManager : MonoBehaviour
     [SerializeField] private float respawnDelay = 0.35f;
     [SerializeField] private int coinsBurstCount = 6;
     [SerializeField] private ZoneCompletePopup zoneCompletePopup;
-    [SerializeField] private int blocksPerZone = 10;
+    [SerializeField, HideInInspector] private int blocksPerZone = 10;
 
     private const string TOTAL_DESTROYED_KEY = "total_blocks_destroyed";
 
@@ -38,10 +38,34 @@ public class BlocksRowManager : MonoBehaviour
         SpawnInitialRow();
     }
 
+    private void OnEnable()
+    {
+        if (ZoneManager.Instance != null)
+        {
+            ZoneManager.Instance.OnZoneChanged -= OnZoneChanged;
+            ZoneManager.Instance.OnZoneChanged += OnZoneChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (ZoneManager.Instance != null) ZoneManager.Instance.OnZoneChanged -= OnZoneChanged;
+    }
+
     private void FindCoinsHudTarget()
     {
         GameObject hud = GameObject.Find("CoinsIcon");
         if (hud != null) coinsHudTarget = hud.GetComponent<RectTransform>();
+    }
+
+    private void OnZoneChanged(ZoneInfo zone)
+    {
+        foreach (var b in activeBlocks)
+        {
+            if (b != null) Destroy(b.gameObject);
+        }
+        activeBlocks.Clear();
+        SpawnInitialRow();
     }
 
     private void SpawnInitialRow()
@@ -57,9 +81,14 @@ public class BlocksRowManager : MonoBehaviour
     {
         if (index < 0 || index >= blockSlots.Count) return;
 
-        BlockTypeData type = BlockConfigProvider.Config.GetTypeForBlock(totalDestroyed + index);
-        float hp = BlockConfigProvider.Config.CalcHP(totalDestroyed + index);
-        int reward = BlockConfigProvider.Config.CalcReward(totalDestroyed + index);
+        ZoneInfo zone = ZoneManager.Instance != null ? ZoneManager.Instance.CurrentZone : null;
+        List<int> seq = zone != null ? zone.blockSequence : null;
+        float zoneHPMult = zone != null ? zone.hpMultiplier : 1f;
+        float zoneRewardMult = zone != null ? zone.rewardMultiplier : 1f;
+
+        BlockTypeData type = BlockConfigProvider.Config.GetTypeForBlock(totalDestroyed + index, seq);
+        float hp = BlockConfigProvider.Config.CalcHP(totalDestroyed + index, seq, zoneHPMult);
+        int reward = BlockConfigProvider.Config.CalcReward(totalDestroyed + index, seq, zoneRewardMult);
 
         GameObject go = Instantiate(blockPrefabRoot, blockSlots[index]);
         go.name = "Block_" + type.id;
@@ -107,11 +136,6 @@ public class BlocksRowManager : MonoBehaviour
 
         totalDestroyed++;
         PlayerPrefs.SetInt(TOTAL_DESTROYED_KEY, totalDestroyed);
-
-        if (totalDestroyed > 0 && totalDestroyed % blocksPerZone == 0 && zoneCompletePopup != null)
-        {
-            DOVirtual.DelayedCall(0.8f, () => zoneCompletePopup.ShowReward(1), false);
-        }
 
         DOVirtual.DelayedCall(respawnDelay, () => SpawnBlockAt(index));
     }

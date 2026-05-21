@@ -151,6 +151,11 @@ public class PickaxeGridManager : MonoBehaviour
                     PlayerPrefs.SetInt(HIGHEST_REACHED_KEY, HighestEverReached);
                 }
 
+                if (ZoneManager.Instance != null)
+                {
+                    ZoneManager.Instance.CheckUnlock(HighestEverReached);
+                }
+
                 OnMerged?.Invoke(newLevel);
                 OnGridChanged?.Invoke();
             });
