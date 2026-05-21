@@ -90,6 +90,8 @@ public class ShopController : MonoBehaviour
         PlayerPrefs.SetInt(PICKAXES_BOUGHT_KEY, pickaxesBought);
         UpdatePriceLabel();
 
+        if (TutorialManager.Instance != null) TutorialManager.Instance.NotifyShopPurchase();
+
         if (priceIcon != null)
         {
             priceIcon.DOKill();

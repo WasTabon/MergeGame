@@ -78,6 +78,7 @@ public class Block : MonoBehaviour, IPointerClickHandler
         TakeDamage(1f);
 
         if (HapticManager.Instance != null) HapticManager.Instance.Light();
+        if (TutorialManager.Instance != null) TutorialManager.Instance.NotifyBlockTapped();
 
         transform.DOKill(true);
         transform.localScale = originalScale;
