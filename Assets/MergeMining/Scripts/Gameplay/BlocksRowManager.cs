@@ -137,6 +137,8 @@ public class BlocksRowManager : MonoBehaviour
         totalDestroyed++;
         PlayerPrefs.SetInt(TOTAL_DESTROYED_KEY, totalDestroyed);
 
+        if (ChestManager.Instance != null) ChestManager.Instance.RegisterBlockDestroyed();
+
         DOVirtual.DelayedCall(respawnDelay, () => SpawnBlockAt(index));
     }
 

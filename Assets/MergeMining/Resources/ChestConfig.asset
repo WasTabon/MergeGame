@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ce638232facd0458454740c4b2b858, type: 3}
+  m_Name: ChestConfig
+  m_EditorClassIdentifier: 
+  chests:
+  - type: 0
+    displayName: Free Chest
+    chestColor: {r: 0.4, g: 0.7, b: 0.4, a: 1}
+    accentColor: {r: 0.6, g: 0.95, b: 0.6, a: 1}
+    rewardsCount: 4
+    possibleRewards:
+    - id: coins
+      color: {r: 0.961, g: 0.651, b: 0.137, a: 1}
+      minAmount: 30
+      maxAmount: 100
+      weight: 5
+    - id: gems
+      color: {r: 0.4, g: 0.85, b: 0.9, a: 1}
+      minAmount: 1
+      maxAmount: 2
+      weight: 1
+    - id: pickaxe_lvl1
+      color: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 3
+    - id: pickaxe_lvl2
+      color: {r: 0.45, g: 0.45, b: 0.5, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 1
+  - type: 1
+    displayName: Block Chest
+    chestColor: {r: 0.5, g: 0.35, b: 0.2, a: 1}
+    accentColor: {r: 0.95, g: 0.78, b: 0.25, a: 1}
+    rewardsCount: 5
+    possibleRewards:
+    - id: coins
+      color: {r: 0.961, g: 0.651, b: 0.137, a: 1}
+      minAmount: 80
+      maxAmount: 300
+      weight: 4
+    - id: gems
+      color: {r: 0.4, g: 0.85, b: 0.9, a: 1}
+      minAmount: 2
+      maxAmount: 5
+      weight: 1.5
+    - id: pickaxe_lvl2
+      color: {r: 0.45, g: 0.45, b: 0.5, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 2.5
+    - id: pickaxe_lvl3
+      color: {r: 0.72, g: 0.5, b: 0.32, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 1.5
+    - id: pickaxe_lvl4
+      color: {r: 0.78, g: 0.78, b: 0.82, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 0.7
+  - type: 2
+    displayName: Premium Chest
+    chestColor: {r: 0.4, g: 0.2, b: 0.55, a: 1}
+    accentColor: {r: 0.85, g: 0.55, b: 0.95, a: 1}
+    rewardsCount: 6
+    possibleRewards:
+    - id: coins
+      color: {r: 0.961, g: 0.651, b: 0.137, a: 1}
+      minAmount: 300
+      maxAmount: 800
+      weight: 3
+    - id: gems
+      color: {r: 0.4, g: 0.85, b: 0.9, a: 1}
+      minAmount: 5
+      maxAmount: 15
+      weight: 2
+    - id: pickaxe_lvl4
+      color: {r: 0.78, g: 0.78, b: 0.82, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 2
+    - id: pickaxe_lvl5
+      color: {r: 0.95, g: 0.78, b: 0.25, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 1.5
+    - id: pickaxe_lvl6
+      color: {r: 0.65, g: 0.18, b: 0.18, a: 1}
+      minAmount: 1
+      maxAmount: 1
+      weight: 1
+  freeChestCooldownSeconds: 300
+  blocksPerChest: 20
+  premiumChestGemsCost: 50
