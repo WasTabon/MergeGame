@@ -67,8 +67,10 @@ public class ShopController : MonoBehaviour
     {
         bool canAfford = CurrencyManager.Instance != null && CurrencyManager.Instance.CanAfford(GetCurrentPrice());
         bool hasSlot = PickaxeGridManager.Instance != null && PickaxeGridManager.Instance.HasFreeSlot();
-        bool isSetup = LevelManager.Instance == null || LevelManager.Instance.Phase == LevelPhase.Setup;
-        shopButton.interactable = canAfford && hasSlot && isSetup;
+        bool inGameplayPhase = LevelManager.Instance == null
+            || LevelManager.Instance.Phase == LevelPhase.Setup
+            || LevelManager.Instance.Phase == LevelPhase.Battle;
+        shopButton.interactable = canAfford && hasSlot && inGameplayPhase;
     }
 
     private void OnShopClicked()

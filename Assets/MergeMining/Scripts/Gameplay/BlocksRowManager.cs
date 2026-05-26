@@ -78,7 +78,7 @@ public class BlocksRowManager : MonoBehaviour
         {
             hp *= LevelManager.Instance.ActiveModifier.BlockHPMultiplier;
         }
-        int reward = 0;
+        int reward = Mathf.Max(1, Mathf.RoundToInt(3f * (type != null ? type.rewardMultiplier : 1f)));
 
         GameObject go = Instantiate(blockPrefabRoot, blockSlots[index]);
         go.name = "Block_" + type.id;
@@ -148,6 +148,17 @@ public class BlocksRowManager : MonoBehaviour
 
         if (HapticManager.Instance != null) HapticManager.Instance.Medium();
         if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.blockExplode);
+
+        int reward = block.RewardCoins;
+        Debug.Log("[BLOCK DESTROYED] " + block.TypeData.id + " reward=" + reward + " FlySpawner=" + (FlyEffectSpawner.Instance != null) + " CurrencyMgr=" + (CurrencyManager.Instance != null));
+        if (reward > 0 && FlyEffectSpawner.Instance != null)
+        {
+            FlyEffectSpawner.Instance.FlyCoins(block.RectTransform.position, reward, 5);
+        }
+        else if (reward > 0 && CurrencyManager.Instance != null)
+        {
+            CurrencyManager.Instance.AddCoins(reward);
+        }
 
         totalDestroyed++;
         PlayerPrefs.SetInt(TOTAL_DESTROYED_KEY, totalDestroyed);
