@@ -13,40 +13,60 @@ public class LevelHud : MonoBehaviour
     [SerializeField] private TextMeshProUGUI startButtonLabel;
     [SerializeField] private Button restartButton;
 
-    private void OnEnable()
-    {
-        if (LevelManager.Instance != null)
-        {
-            LevelManager.Instance.OnPhaseChanged -= OnPhaseChanged;
-            LevelManager.Instance.OnPhaseChanged += OnPhaseChanged;
-            LevelManager.Instance.OnBlockProgress -= OnBlockProgress;
-            LevelManager.Instance.OnBlockProgress += OnBlockProgress;
-            Refresh();
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (LevelManager.Instance != null)
-        {
-            LevelManager.Instance.OnPhaseChanged -= OnPhaseChanged;
-            LevelManager.Instance.OnBlockProgress -= OnBlockProgress;
-        }
-    }
+    private bool subscribed = false;
 
     private void Start()
     {
         if (startBattleButton != null) startBattleButton.onClick.AddListener(OnStartClicked);
         if (restartButton != null) restartButton.onClick.AddListener(OnRestartClicked);
-        Refresh();
+        TrySubscribe();
+        FullRefresh();
     }
 
-    private void Refresh()
+    private void OnDisable()
+    {
+        Unsubscribe();
+    }
+
+    private void Update()
+    {
+        if (!subscribed) TrySubscribe();
+        if (LevelManager.Instance == null) return;
+        UpdateStartButtonState();
+    }
+
+    private void TrySubscribe()
+    {
+        if (subscribed) return;
+        if (LevelManager.Instance == null) return;
+        LevelManager.Instance.OnPhaseChanged += OnPhaseChanged;
+        LevelManager.Instance.OnBlockProgress += OnBlockProgress;
+        subscribed = true;
+        FullRefresh();
+    }
+
+    private void Unsubscribe()
+    {
+        if (!subscribed) return;
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.OnPhaseChanged -= OnPhaseChanged;
+            LevelManager.Instance.OnBlockProgress -= OnBlockProgress;
+        }
+        subscribed = false;
+    }
+
+    private void FullRefresh()
     {
         if (LevelManager.Instance == null) return;
+
         if (levelText != null) levelText.text = "LEVEL " + LevelManager.Instance.CurrentLevelNumber;
+
         OnPhaseChanged(LevelManager.Instance.Phase);
-        OnBlockProgress(LevelManager.Instance.GetBlocksDestroyed(), LevelManager.Instance.GetBlocksTotal());
+
+        int destroyed = LevelManager.Instance.GetBlocksDestroyed();
+        int total = LevelManager.Instance.GetBlocksTotal();
+        OnBlockProgress(destroyed, total);
     }
 
     private void OnPhaseChanged(LevelPhase phase)
@@ -60,20 +80,19 @@ public class LevelHud : MonoBehaviour
                 case LevelPhase.Victory: phaseText.text = "VICTORY"; break;
             }
         }
+
         if (startBattleButton != null)
         {
             bool show = phase == LevelPhase.Setup;
             startBattleButton.gameObject.SetActive(show);
             if (show && startButtonLabel != null) startButtonLabel.text = "START!";
-            if (show && PickaxeGridManager.Instance != null)
-            {
-                startBattleButton.interactable = PickaxeGridManager.Instance.CountAlive() > 0;
-            }
         }
     }
 
     private void OnBlockProgress(int destroyed, int total)
     {
+        if (total <= 0 && LevelManager.Instance != null) total = LevelManager.Instance.GetBlocksTotal();
+
         if (blocksProgressText != null) blocksProgressText.text = destroyed + "/" + total;
         if (blocksProgressFill != null)
         {
@@ -81,6 +100,16 @@ public class LevelHud : MonoBehaviour
             blocksProgressFill.DOKill();
             blocksProgressFill.DOFillAmount(ratio, 0.25f).SetEase(Ease.OutQuad);
         }
+    }
+
+    private void UpdateStartButtonState()
+    {
+        if (startBattleButton == null) return;
+        if (!startBattleButton.gameObject.activeSelf) return;
+        if (LevelManager.Instance.Phase != LevelPhase.Setup) return;
+        if (PickaxeGridManager.Instance == null) return;
+        bool can = PickaxeGridManager.Instance.CountAlive() > 0;
+        if (startBattleButton.interactable != can) startBattleButton.interactable = can;
     }
 
     private void OnStartClicked()
@@ -94,14 +123,5 @@ public class LevelHud : MonoBehaviour
     {
         if (LevelManager.Instance == null) return;
         LevelManager.Instance.RestartLevel();
-    }
-
-    private void Update()
-    {
-        if (LevelManager.Instance != null && LevelManager.Instance.Phase == LevelPhase.Setup && startBattleButton != null && PickaxeGridManager.Instance != null)
-        {
-            bool can = PickaxeGridManager.Instance.CountAlive() > 0;
-            if (startBattleButton.interactable != can) startBattleButton.interactable = can;
-        }
     }
 }

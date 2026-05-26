@@ -23,10 +23,9 @@ public class LevelManager : MonoBehaviour
     public event Action<LevelPhase> OnPhaseChanged;
     public event Action<int, int> OnBlockProgress;
 
-    private void Awake() { Instance = this; }
-
-    private void Start()
+    private void Awake()
     {
+        Instance = this;
         int requested = PlayerPrefs.GetInt(PENDING_LEVEL_KEY, 0);
         if (requested > 0)
         {
@@ -38,7 +37,10 @@ public class LevelManager : MonoBehaviour
             CurrentLevelNumber = Mathf.Max(1, PlayerPrefs.GetInt(CURRENT_LEVEL_KEY, 1));
         }
         CurrentLevel = LevelConfigProvider.Config.GetLevel(CurrentLevelNumber);
+    }
 
+    private void Start()
+    {
         BeginSetupPhase();
     }
 
