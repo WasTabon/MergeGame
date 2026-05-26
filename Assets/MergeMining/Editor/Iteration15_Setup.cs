@@ -26,7 +26,7 @@ public static class Iteration15_Setup
     [MenuItem("Tools/Merge Mining/(Iteration 15) DEBUG - Reset Tutorial")]
     public static void ResetTextTutorial()
     {
-        TextTutorialPopup.ResetDone();
+        TextTutorialPopup.ResetAll();
         Debug.Log("Text tutorial reset. Will appear at next Game scene start.");
     }
 

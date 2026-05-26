@@ -14677,34 +14677,93 @@ MonoBehaviour:
   stepIndicatorText: {fileID: 137168992}
   nextButton: {fileID: 1207046408}
   nextButtonLabel: {fileID: 802552128}
-  steps:
-  - title: WELCOME!
-    body: Welcome to Merge Mining! In each level you'll build pickaxes to break a
-      fixed number of blocks.
-  - title: BUY PICKAXES
-    body: "Tap the SHOP button to buy a pickaxe with your coins.\n\nEach level gives
-      you a fixed coin budget \u2014 spend it wisely!"
-  - title: MERGE PICKAXES
-    body: 'Drag a pickaxe onto another of the same level to merge them into a stronger
-      one.
+  groups:
+  - triggerLevel: 1
+    doneKey: text_tutorial_done_1
+    steps:
+    - title: WELCOME!
+      body: Welcome to Merge Mining! Each level has a fixed number of blocks you
+        need to destroy.
+    - title: BUY PICKAXES
+      body: "Tap the SHOP button to buy a Lvl 1 pickaxe with your coins.\n\nEach
+        level gives you a coin budget \u2014 spend it wisely!"
+    - title: MERGE PICKAXES
+      body: 'Drag a pickaxe onto another of the same level to merge into a stronger
+        one.
 
 
-      Merged pickaxes deal way more damage!'
-  - title: START THE BATTLE
-    body: 'When you''re ready, tap the green START button.
+        Higher level pickaxes deal much more damage!'
+    - title: START THE BATTLE
+      body: 'When you''re ready, tap the green START button.
 
 
-      Your pickaxes
-      will automatically attack the blocks above.'
-  - title: WIN THE LEVEL
-    body: 'Destroy all blocks to win!
+        Your pickaxes
+        will automatically attack the blocks above.'
+    - title: WIN THE LEVEL
+      body: 'Destroy all blocks to win!
 
 
-      The more pickaxes you save, the more
-      stars you get.
+        The more pickaxes you save, the
+        more stars you get.
 
 
-      Good luck!'
+        Good luck!'
+  - triggerLevel: 2
+    doneKey: text_tutorial_done_2
+    steps:
+    - title: TIMER
+      body: 'Each level has a time limit. If you run out, you lose!
+
+
+        The
+        timer is at the top-left during battle.'
+    - title: FALLING BLOCKS
+      body: "Blocks slowly descend toward your pickaxes.\n\nIf they reach the grid
+        \u2014 you lose. Move fast!"
+    - title: DURABILITY
+      body: 'Each pickaxe has limited durability (green bar at the bottom).
+
+
+        After
+        many attacks, it breaks and disappears.'
+    - title: BLOCK REGEN
+      body: 'If you don''t damage a block for ~1.5 seconds, its HP regenerates!
+
+
+        Focus
+        your fire.'
+    - title: SPECIAL BLOCKS
+      body: 'Iron - only Lvl 3+ pickaxes can damage it
+
+        Diamond - takes only
+        50% damage
+
+        Explosive - hurts pickaxes when broken
+
+        Healer
+        - heals nearby blocks
+
+        Armored - reduces damage by 3
+
+        Shell
+        - regen after outer crack
+
+        BOSS - destroys your weakest pickaxe every
+        6s'
+  - triggerLevel: 3
+    doneKey: text_tutorial_done_3
+    steps:
+    - title: MODIFIERS
+      body: 'Before each level you''ll choose 1 of 3 random modifiers.
+
+
+        Each
+        gives a bonus AND a drawback. Pick what fits your strategy!'
+    - title: SACRIFICE
+      body: "In battle, the pink SACRIFICE button on the right destroys your strongest
+        pickaxe.\n\nIn exchange \u2014 every block on the field dies instantly!"
+    - title: READY!
+      body: You now know all the rules. Time to crush some blocks!
 --- !u!1 &1118179251
 GameObject:
   m_ObjectHideFlags: 0
@@ -29096,6 +29155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popup: {fileID: 1965293665}
+  tutorialPopup: {fileID: 1096189509}
   delaySeconds: 0.5
 --- !u!1 &2115257924
 GameObject:

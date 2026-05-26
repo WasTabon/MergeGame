@@ -4,6 +4,7 @@ using DG.Tweening;
 public class ModifierChoiceStarter : MonoBehaviour
 {
     [SerializeField] private ModifierChoicePopup popup;
+    [SerializeField] private TextTutorialPopup tutorialPopup;
     [SerializeField] private float delaySeconds = 0.6f;
 
     private bool shown = false;
@@ -20,7 +21,11 @@ public class ModifierChoiceStarter : MonoBehaviour
         if (popup == null) return;
         if (LevelManager.Instance == null) return;
 
-        if (!TextTutorialPopup.IsDone()) { tryAt = Time.unscaledTime + 0.3f; return; }
+        if (tutorialPopup != null && tutorialPopup.HasPendingTutorialForLevel(LevelManager.Instance.CurrentLevelNumber))
+        {
+            tryAt = Time.unscaledTime + 0.3f;
+            return;
+        }
         if (PopupManager.Instance != null && PopupManager.Instance.IsAnyPopupOpen) { tryAt = Time.unscaledTime + 0.3f; return; }
 
         if (Time.unscaledTime < tryAt) return;

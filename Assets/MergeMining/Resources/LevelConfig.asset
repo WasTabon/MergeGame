@@ -15,7 +15,7 @@ MonoBehaviour:
   levels:
   - levelNumber: 1
     blocksToDestroy: 4
-    startingCoins: 30
+    startingCoins: 45
     maxPickaxeLevel: 2
     blockHP: 12
     blockSequence: 0000000007000000000000000200000005000000
@@ -27,7 +27,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 2
     blocksToDestroy: 6
-    startingCoins: 40
+    startingCoins: 60
     maxPickaxeLevel: 2
     blockHP: 16
     blockSequence: 000000000200000007000000030000000000000005000000
@@ -39,7 +39,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 3
     blocksToDestroy: 8
-    startingCoins: 50
+    startingCoins: 75
     maxPickaxeLevel: 3
     blockHP: 22
     blockSequence: 000000000700000002000000010000000400000005000000
@@ -51,7 +51,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 4
     blocksToDestroy: 10
-    startingCoins: 60
+    startingCoins: 90
     maxPickaxeLevel: 3
     blockHP: 30
     blockSequence: 0000000003000000070000000100000005000000020000000400000006000000
@@ -63,7 +63,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 5
     blocksToDestroy: 12
-    startingCoins: 80
+    startingCoins: 120
     maxPickaxeLevel: 4
     blockHP: 45
     blockSequence: 0100000000000000070000000400000002000000030000000500000006000000
@@ -75,7 +75,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 6
     blocksToDestroy: 14
-    startingCoins: 100
+    startingCoins: 150
     maxPickaxeLevel: 4
     blockHP: 65
     blockSequence: 000000000700000001000000030000000400000002000000050000000600000007000000
@@ -87,7 +87,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 7
     blocksToDestroy: 16
-    startingCoins: 120
+    startingCoins: 180
     maxPickaxeLevel: 5
     blockHP: 95
     blockSequence: 040000000100000006000000070000000300000002000000050000000100000004000000
@@ -99,7 +99,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 8
     blocksToDestroy: 18
-    startingCoins: 140
+    startingCoins: 210
     maxPickaxeLevel: 5
     blockHP: 140
     blockSequence: 01000000030000000400000007000000060000000200000005000000010000000300000007000000
@@ -111,7 +111,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 9
     blocksToDestroy: 20
-    startingCoins: 170
+    startingCoins: 255
     maxPickaxeLevel: 6
     blockHP: 200
     blockSequence: 01000000040000000700000006000000030000000500000001000000040000000700000006000000
@@ -123,7 +123,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 10
     blocksToDestroy: 22
-    startingCoins: 200
+    startingCoins: 300
     maxPickaxeLevel: 7
     blockHP: 280
     blockSequence: 02000000010000000400000007000000060000000500000003000000070000000600000002000000
@@ -135,7 +135,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 11
     blocksToDestroy: 24
-    startingCoins: 240
+    startingCoins: 360
     maxPickaxeLevel: 8
     blockHP: 400
     blockSequence: 0300000001000000060000000700000004000000050000000700000006000000010000000300000004000000
@@ -147,7 +147,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 12
     blocksToDestroy: 26
-    startingCoins: 280
+    startingCoins: 420
     maxPickaxeLevel: 9
     blockHP: 580
     blockSequence: 0100000006000000070000000400000005000000030000000700000006000000040000000100000005000000
@@ -159,7 +159,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 13
     blocksToDestroy: 28
-    startingCoins: 320
+    startingCoins: 480
     maxPickaxeLevel: 10
     blockHP: 850
     blockSequence: 060000000700000001000000050000000400000007000000060000000300000001000000050000000400000007000000
@@ -171,7 +171,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 14
     blocksToDestroy: 30
-    startingCoins: 380
+    startingCoins: 570
     maxPickaxeLevel: 12
     blockHP: 1200
     blockSequence: 010000000700000006000000050000000400000007000000030000000600000005000000010000000700000004000000
@@ -183,7 +183,7 @@ MonoBehaviour:
     blockRegenPerSec: 0.05
   - levelNumber: 15
     blocksToDestroy: 35
-    startingCoins: 450
+    startingCoins: 675
     maxPickaxeLevel: 15
     blockHP: 2000
     blockSequence: 06000000070000000100000005000000070000000400000003000000070000000600000001000000050000000400000007000000
