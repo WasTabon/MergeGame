@@ -21,6 +21,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 1
+    timeLimitSeconds: 60
+    blockDescendSpeed: 0
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 2
     blocksToDestroy: 6
     startingCoins: 40
@@ -29,6 +33,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 1
+    timeLimitSeconds: 65
+    blockDescendSpeed: 0
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 3
     blocksToDestroy: 8
     startingCoins: 50
@@ -37,6 +45,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 2
+    timeLimitSeconds: 70
+    blockDescendSpeed: 8
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 4
     blocksToDestroy: 10
     startingCoins: 60
@@ -45,6 +57,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 2
+    timeLimitSeconds: 75
+    blockDescendSpeed: 10
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 5
     blocksToDestroy: 12
     startingCoins: 80
@@ -53,6 +69,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 3
+    timeLimitSeconds: 85
+    blockDescendSpeed: 14
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 6
     blocksToDestroy: 14
     startingCoins: 100
@@ -61,6 +81,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 3
+    timeLimitSeconds: 95
+    blockDescendSpeed: 18
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 7
     blocksToDestroy: 16
     startingCoins: 120
@@ -69,6 +93,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 4
+    timeLimitSeconds: 105
+    blockDescendSpeed: 22
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 8
     blocksToDestroy: 18
     startingCoins: 140
@@ -77,6 +105,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 4
+    timeLimitSeconds: 115
+    blockDescendSpeed: 25
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 9
     blocksToDestroy: 20
     startingCoins: 170
@@ -85,6 +117,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 5
+    timeLimitSeconds: 125
+    blockDescendSpeed: 28
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 10
     blocksToDestroy: 22
     startingCoins: 200
@@ -93,6 +129,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 5
+    timeLimitSeconds: 135
+    blockDescendSpeed: 30
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 11
     blocksToDestroy: 24
     startingCoins: 240
@@ -101,6 +141,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 6
+    timeLimitSeconds: 145
+    blockDescendSpeed: 32
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 12
     blocksToDestroy: 26
     startingCoins: 280
@@ -109,6 +153,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 7
+    timeLimitSeconds: 155
+    blockDescendSpeed: 33
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 13
     blocksToDestroy: 28
     startingCoins: 320
@@ -117,6 +165,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 8
+    timeLimitSeconds: 165
+    blockDescendSpeed: 34
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 14
     blocksToDestroy: 30
     startingCoins: 380
@@ -125,6 +177,10 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 10
+    timeLimitSeconds: 175
+    blockDescendSpeed: 35
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   - levelNumber: 15
     blocksToDestroy: 35
     startingCoins: 450
@@ -133,4 +189,8 @@ MonoBehaviour:
     blockSequence: 00000000
     zoneId: stone_cave
     gemsReward: 15
+    timeLimitSeconds: 180
+    blockDescendSpeed: 35
+    blockRegenDelay: 1.5
+    blockRegenPerSec: 0.05
   pickaxeBaseCost: 10

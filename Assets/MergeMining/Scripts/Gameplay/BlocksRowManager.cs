@@ -88,11 +88,28 @@ public class BlocksRowManager : MonoBehaviour
 
         Block block = go.GetComponent<Block>();
         block.Setup(type, hp, reward);
+        block.SetRegen(activeLevel.blockRegenDelay, activeLevel.blockRegenPerSec);
+        if (activeLevel.blockDescendSpeed > 0f && PickaxeGridManager.Instance != null && PickaxeGridManager.Instance.DragLayer != null)
+        {
+            float dangerY = ComputeDangerLineY();
+            block.SetDescend(activeLevel.blockDescendSpeed, dangerY);
+        }
         block.OnDestroyed += OnBlockDestroyed;
         activeBlocks[index] = block;
 
         spawnIndexCounter++;
         remainingBlocksToSpawn--;
+    }
+
+    private float ComputeDangerLineY()
+    {
+        if (PickaxeGridManager.Instance == null) return float.NegativeInfinity;
+        GameObject gridGo = GameObject.Find("PickaxeGrid");
+        if (gridGo == null) return float.NegativeInfinity;
+        RectTransform gridRt = gridGo.transform as RectTransform;
+        Vector3[] corners = new Vector3[4];
+        gridRt.GetWorldCorners(corners);
+        return corners[1].y;
     }
 
     private void OnBlockDestroyed(Block block)

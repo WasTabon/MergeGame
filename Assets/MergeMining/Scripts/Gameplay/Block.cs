@@ -23,10 +23,57 @@ public class Block : MonoBehaviour, IPointerClickHandler
 
     private bool isDying = false;
     private Vector3 originalScale;
+    private float lastDamageTime;
+    private float regenDelay = 1.5f;
+    private float regenPerSec = 0f;
+    private float descendSpeed = 0f;
+    private float dangerY = float.NegativeInfinity;
+    private bool reachedBottom = false;
 
     private void Awake()
     {
         originalScale = transform.localScale;
+    }
+
+    public void SetRegen(float delay, float perSec)
+    {
+        regenDelay = delay;
+        regenPerSec = perSec;
+    }
+
+    public void SetDescend(float speed, float dangerWorldY)
+    {
+        descendSpeed = speed;
+        dangerY = dangerWorldY;
+    }
+
+    private void Update()
+    {
+        if (!IsAlive) return;
+        if (LevelManager.Instance != null && LevelManager.Instance.Phase != LevelPhase.Battle) return;
+
+        if (descendSpeed > 0f && !reachedBottom)
+        {
+            RectTransform rt = transform as RectTransform;
+            Vector3 pos = rt.position;
+            pos.y -= descendSpeed * Time.deltaTime;
+            rt.position = pos;
+            if (rt.position.y <= dangerY)
+            {
+                reachedBottom = true;
+                if (LevelManager.Instance != null) LevelManager.Instance.NotifyBlockReachedBottom();
+            }
+        }
+
+        if (regenPerSec > 0f && CurrentHP < MaxHP)
+        {
+            if (Time.time - lastDamageTime >= regenDelay)
+            {
+                CurrentHP += MaxHP * regenPerSec * Time.deltaTime;
+                if (CurrentHP > MaxHP) CurrentHP = MaxHP;
+                if (hpBar != null) hpBar.AnimateTo(CurrentHP / MaxHP, 0.1f);
+            }
+        }
     }
 
     public void Setup(BlockTypeData type, float maxHP, int reward)
@@ -53,6 +100,7 @@ public class Block : MonoBehaviour, IPointerClickHandler
 
         CurrentHP -= dmg;
         if (CurrentHP < 0f) CurrentHP = 0f;
+        lastDamageTime = Time.time;
 
         if (hpBar != null) hpBar.AnimateTo(CurrentHP / MaxHP, 0.2f);
 

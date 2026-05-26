@@ -264,6 +264,16 @@ public class PickaxeGridManager : MonoBehaviour
         PlayerPrefs.DeleteKey(GRID_SAVE_KEY);
     }
 
+    public void NotifyPickaxeBroken()
+    {
+        UpdateMaxLevel();
+        OnGridChanged?.Invoke();
+        if (LevelManager.Instance != null && LevelManager.Instance.Phase == LevelPhase.Battle && CountAlive() == 0)
+        {
+            LevelManager.Instance.NotifyAllPickaxesLost();
+        }
+    }
+
     public bool TryAutoMergeOneRandom()
     {
         List<Pickaxe> allPickaxes = new List<Pickaxe>();

@@ -12,6 +12,8 @@ public class LevelHud : MonoBehaviour
     [SerializeField] private Button startBattleButton;
     [SerializeField] private TextMeshProUGUI startButtonLabel;
     [SerializeField] private Button restartButton;
+    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private Image timerFill;
 
     private bool subscribed = false;
 
@@ -41,6 +43,7 @@ public class LevelHud : MonoBehaviour
         if (LevelManager.Instance == null) return;
         LevelManager.Instance.OnPhaseChanged += OnPhaseChanged;
         LevelManager.Instance.OnBlockProgress += OnBlockProgress;
+        LevelManager.Instance.OnTimerTick += OnTimerTick;
         subscribed = true;
         FullRefresh();
     }
@@ -52,6 +55,7 @@ public class LevelHud : MonoBehaviour
         {
             LevelManager.Instance.OnPhaseChanged -= OnPhaseChanged;
             LevelManager.Instance.OnBlockProgress -= OnBlockProgress;
+            LevelManager.Instance.OnTimerTick -= OnTimerTick;
         }
         subscribed = false;
     }
@@ -67,6 +71,7 @@ public class LevelHud : MonoBehaviour
         int destroyed = LevelManager.Instance.GetBlocksDestroyed();
         int total = LevelManager.Instance.GetBlocksTotal();
         OnBlockProgress(destroyed, total);
+        OnTimerTick(LevelManager.Instance.TimeRemaining, LevelManager.Instance.GetTimeLimit());
     }
 
     private void OnPhaseChanged(LevelPhase phase)
@@ -78,6 +83,7 @@ public class LevelHud : MonoBehaviour
                 case LevelPhase.Setup: phaseText.text = "BUY & MERGE PICKAXES"; break;
                 case LevelPhase.Battle: phaseText.text = "BATTLE!"; break;
                 case LevelPhase.Victory: phaseText.text = "VICTORY"; break;
+                case LevelPhase.Defeat: phaseText.text = "DEFEAT"; break;
             }
         }
 
@@ -87,6 +93,9 @@ public class LevelHud : MonoBehaviour
             startBattleButton.gameObject.SetActive(show);
             if (show && startButtonLabel != null) startButtonLabel.text = "START!";
         }
+
+        if (timerText != null) timerText.gameObject.SetActive(phase == LevelPhase.Battle);
+        if (timerFill != null) timerFill.transform.parent.gameObject.SetActive(phase == LevelPhase.Battle);
     }
 
     private void OnBlockProgress(int destroyed, int total)
@@ -99,6 +108,22 @@ public class LevelHud : MonoBehaviour
             float ratio = total > 0 ? (float)destroyed / total : 0f;
             blocksProgressFill.DOKill();
             blocksProgressFill.DOFillAmount(ratio, 0.25f).SetEase(Ease.OutQuad);
+        }
+    }
+
+    private void OnTimerTick(float remaining, float total)
+    {
+        if (timerText != null)
+        {
+            int seconds = Mathf.CeilToInt(remaining);
+            timerText.text = string.Format("{0:00}:{1:00}", seconds / 60, seconds % 60);
+            timerText.color = remaining < 10f ? new Color(1f, 0.4f, 0.4f) : Color.white;
+        }
+        if (timerFill != null)
+        {
+            float ratio = total > 0f ? remaining / total : 0f;
+            timerFill.fillAmount = ratio;
+            timerFill.color = remaining < 10f ? new Color(0.95f, 0.3f, 0.3f) : new Color(0.4f, 0.78f, 0.4f);
         }
     }
 

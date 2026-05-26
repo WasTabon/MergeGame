@@ -12,6 +12,10 @@ public class LevelDefinition
     public List<int> blockSequence = new List<int> { 0 };
     public string zoneId = "stone_cave";
     public int gemsReward = 1;
+    public float timeLimitSeconds = 60f;
+    public float blockDescendSpeed = 30f;
+    public float blockRegenDelay = 1.5f;
+    public float blockRegenPerSec = 0.05f;
 }
 
 [CreateAssetMenu(menuName = "MergeMining/LevelConfig", fileName = "LevelConfig")]

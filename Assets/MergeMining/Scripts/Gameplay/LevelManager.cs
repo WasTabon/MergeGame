@@ -6,6 +6,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance { get; private set; }
 
     [SerializeField] private LevelVictoryPopup victoryPopup;
+    [SerializeField] private LevelDefeatPopup defeatPopup;
     [SerializeField] private LevelHud levelHud;
 
     private const string CURRENT_LEVEL_KEY = "current_level";
@@ -17,11 +18,14 @@ public class LevelManager : MonoBehaviour
     public LevelDefinition CurrentLevel { get; private set; }
     public LevelPhase Phase { get; private set; } = LevelPhase.Setup;
 
+    public float TimeRemaining { get; private set; }
+
     private int spentCoins;
     private int blocksDestroyed;
 
     public event Action<LevelPhase> OnPhaseChanged;
     public event Action<int, int> OnBlockProgress;
+    public event Action<float, float> OnTimerTick;
 
     private void Awake()
     {
@@ -37,6 +41,7 @@ public class LevelManager : MonoBehaviour
             CurrentLevelNumber = Mathf.Max(1, PlayerPrefs.GetInt(CURRENT_LEVEL_KEY, 1));
         }
         CurrentLevel = LevelConfigProvider.Config.GetLevel(CurrentLevelNumber);
+        TimeRemaining = CurrentLevel != null ? CurrentLevel.timeLimitSeconds : 60f;
     }
 
     private void Start()
@@ -44,11 +49,24 @@ public class LevelManager : MonoBehaviour
         BeginSetupPhase();
     }
 
+    private void Update()
+    {
+        if (Phase != LevelPhase.Battle) return;
+        TimeRemaining -= Time.deltaTime;
+        if (TimeRemaining < 0f) TimeRemaining = 0f;
+        OnTimerTick?.Invoke(TimeRemaining, CurrentLevel != null ? CurrentLevel.timeLimitSeconds : 60f);
+        if (TimeRemaining <= 0f)
+        {
+            FailLevel(LevelFailReason.OutOfTime);
+        }
+    }
+
     private void BeginSetupPhase()
     {
         Phase = LevelPhase.Setup;
         spentCoins = 0;
         blocksDestroyed = 0;
+        TimeRemaining = CurrentLevel != null ? CurrentLevel.timeLimitSeconds : 60f;
 
         if (CurrencyManager.Instance != null)
         {
@@ -80,6 +98,18 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void NotifyBlockReachedBottom()
+    {
+        if (Phase != LevelPhase.Battle) return;
+        FailLevel(LevelFailReason.BlockReachedBottom);
+    }
+
+    public void NotifyAllPickaxesLost()
+    {
+        if (Phase != LevelPhase.Battle) return;
+        FailLevel(LevelFailReason.NoPickaxesLeft);
+    }
+
     public void NotifyCoinsSpent(int amount)
     {
         spentCoins += amount;
@@ -89,6 +119,7 @@ public class LevelManager : MonoBehaviour
 
     public int GetBlocksTotal() => CurrentLevel != null ? CurrentLevel.blocksToDestroy : 0;
     public int GetBlocksDestroyed() => blocksDestroyed;
+    public float GetTimeLimit() => CurrentLevel != null ? CurrentLevel.timeLimitSeconds : 60f;
 
     private void FinishLevel()
     {
@@ -121,6 +152,14 @@ public class LevelManager : MonoBehaviour
 
         OnPhaseChanged?.Invoke(Phase);
         if (victoryPopup != null) victoryPopup.ShowVictory(CurrentLevelNumber, stars, CurrentLevel.gemsReward);
+    }
+
+    private void FailLevel(LevelFailReason reason)
+    {
+        if (Phase == LevelPhase.Defeat) return;
+        Phase = LevelPhase.Defeat;
+        OnPhaseChanged?.Invoke(Phase);
+        if (defeatPopup != null) defeatPopup.ShowDefeat(CurrentLevelNumber, reason);
     }
 
     private int CalcStars(int aliveCount, int leftoverCoins)

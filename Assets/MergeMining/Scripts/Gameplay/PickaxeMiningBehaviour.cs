@@ -40,6 +40,7 @@ public class PickaxeMiningBehaviour : MonoBehaviour
         }
 
         SpawnAttack(target, data);
+        pickaxe.ConsumeDurability();
 
         float speedMult = BoosterManager.Instance != null ? BoosterManager.Instance.SpeedMultiplier : 1f;
         float interval = 1f / (Mathf.Max(0.1f, data.miningSpeed) * speedMult);

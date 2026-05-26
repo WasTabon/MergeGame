@@ -9,6 +9,7 @@ public class PickaxeLevelData
     public float damage = 1f;
     public float miningSpeed = 1f;
     public string displayName = "Pickaxe";
+    public int durability = 10;
 }
 
 [CreateAssetMenu(menuName = "MergeMining/PickaxeConfig", fileName = "PickaxeConfig")]

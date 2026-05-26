@@ -2,5 +2,6 @@ public enum LevelPhase
 {
     Setup,
     Battle,
-    Victory
+    Victory,
+    Defeat
 }
