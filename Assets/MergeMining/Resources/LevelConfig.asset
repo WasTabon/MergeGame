@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 258419acaf80efd4e877bd2cc6aab38b, type: 3}
+  m_Name: LevelConfig
+  m_EditorClassIdentifier: 
+  levels:
+  - levelNumber: 1
+    blocksToDestroy: 4
+    startingCoins: 30
+    maxPickaxeLevel: 2
+    blockHP: 12
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 1
+  - levelNumber: 2
+    blocksToDestroy: 6
+    startingCoins: 40
+    maxPickaxeLevel: 2
+    blockHP: 16
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 1
+  - levelNumber: 3
+    blocksToDestroy: 8
+    startingCoins: 50
+    maxPickaxeLevel: 3
+    blockHP: 22
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 2
+  - levelNumber: 4
+    blocksToDestroy: 10
+    startingCoins: 60
+    maxPickaxeLevel: 3
+    blockHP: 30
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 2
+  - levelNumber: 5
+    blocksToDestroy: 12
+    startingCoins: 80
+    maxPickaxeLevel: 4
+    blockHP: 45
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 3
+  - levelNumber: 6
+    blocksToDestroy: 14
+    startingCoins: 100
+    maxPickaxeLevel: 4
+    blockHP: 65
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 3
+  - levelNumber: 7
+    blocksToDestroy: 16
+    startingCoins: 120
+    maxPickaxeLevel: 5
+    blockHP: 95
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 4
+  - levelNumber: 8
+    blocksToDestroy: 18
+    startingCoins: 140
+    maxPickaxeLevel: 5
+    blockHP: 140
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 4
+  - levelNumber: 9
+    blocksToDestroy: 20
+    startingCoins: 170
+    maxPickaxeLevel: 6
+    blockHP: 200
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 5
+  - levelNumber: 10
+    blocksToDestroy: 22
+    startingCoins: 200
+    maxPickaxeLevel: 7
+    blockHP: 280
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 5
+  - levelNumber: 11
+    blocksToDestroy: 24
+    startingCoins: 240
+    maxPickaxeLevel: 8
+    blockHP: 400
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 6
+  - levelNumber: 12
+    blocksToDestroy: 26
+    startingCoins: 280
+    maxPickaxeLevel: 9
+    blockHP: 580
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 7
+  - levelNumber: 13
+    blocksToDestroy: 28
+    startingCoins: 320
+    maxPickaxeLevel: 10
+    blockHP: 850
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 8
+  - levelNumber: 14
+    blocksToDestroy: 30
+    startingCoins: 380
+    maxPickaxeLevel: 12
+    blockHP: 1200
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 10
+  - levelNumber: 15
+    blocksToDestroy: 35
+    startingCoins: 450
+    maxPickaxeLevel: 15
+    blockHP: 2000
+    blockSequence: 00000000
+    zoneId: stone_cave
+    gemsReward: 15
+  pickaxeBaseCost: 10

@@ -22,6 +22,7 @@ public class PickaxeMiningBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if (LevelManager.Instance != null && LevelManager.Instance.Phase != LevelPhase.Battle) return;
         if (Time.time < nextAttackTime) return;
         if (BlocksRowManager.Instance == null) return;
         if (PickaxeGridManager.Instance == null) return;

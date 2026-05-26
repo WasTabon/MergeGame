@@ -23,6 +23,10 @@ public class BlocksRowManager : MonoBehaviour
     private int totalDestroyed = 0;
     private RectTransform coinsHudTarget;
 
+    private LevelDefinition activeLevel;
+    private int spawnIndexCounter;
+    private int remainingBlocksToSpawn;
+
     public IReadOnlyList<Block> ActiveBlocks => activeBlocks;
     public int TotalDestroyed => totalDestroyed;
 
@@ -35,21 +39,7 @@ public class BlocksRowManager : MonoBehaviour
     private void Start()
     {
         FindCoinsHudTarget();
-        SpawnInitialRow();
-    }
-
-    private void OnEnable()
-    {
-        if (ZoneManager.Instance != null)
-        {
-            ZoneManager.Instance.OnZoneChanged -= OnZoneChanged;
-            ZoneManager.Instance.OnZoneChanged += OnZoneChanged;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (ZoneManager.Instance != null) ZoneManager.Instance.OnZoneChanged -= OnZoneChanged;
+        for (int i = 0; i < blockSlots.Count; i++) activeBlocks.Add(null);
     }
 
     private void FindCoinsHudTarget()
@@ -58,21 +48,17 @@ public class BlocksRowManager : MonoBehaviour
         if (hud != null) coinsHudTarget = hud.GetComponent<RectTransform>();
     }
 
-    private void OnZoneChanged(ZoneInfo zone)
+    public void BeginLevelBattle(LevelDefinition level)
     {
-        foreach (var b in activeBlocks)
-        {
-            if (b != null) Destroy(b.gameObject);
-        }
-        activeBlocks.Clear();
-        SpawnInitialRow();
-    }
+        activeLevel = level;
+        spawnIndexCounter = 0;
+        remainingBlocksToSpawn = level.blocksToDestroy;
 
-    private void SpawnInitialRow()
-    {
-        for (int i = 0; i < blockSlots.Count; i++)
+        for (int i = 0; i < activeBlocks.Count; i++) activeBlocks[i] = null;
+
+        int initialBlocks = Mathf.Min(blockSlots.Count, remainingBlocksToSpawn);
+        for (int i = 0; i < initialBlocks; i++)
         {
-            activeBlocks.Add(null);
             SpawnBlockAt(i);
         }
     }
@@ -80,15 +66,15 @@ public class BlocksRowManager : MonoBehaviour
     private void SpawnBlockAt(int index)
     {
         if (index < 0 || index >= blockSlots.Count) return;
+        if (activeLevel == null) return;
+        if (remainingBlocksToSpawn <= 0) return;
 
-        ZoneInfo zone = ZoneManager.Instance != null ? ZoneManager.Instance.CurrentZone : null;
-        List<int> seq = zone != null ? zone.blockSequence : null;
-        float zoneHPMult = zone != null ? zone.hpMultiplier : 1f;
-        float zoneRewardMult = zone != null ? zone.rewardMultiplier : 1f;
+        List<int> seq = activeLevel.blockSequence;
+        if (seq == null || seq.Count == 0) seq = new List<int> { 0 };
 
-        BlockTypeData type = BlockConfigProvider.Config.GetTypeForBlock(totalDestroyed + index, seq);
-        float hp = BlockConfigProvider.Config.CalcHP(totalDestroyed + index, seq, zoneHPMult);
-        int reward = BlockConfigProvider.Config.CalcReward(totalDestroyed + index, seq, zoneRewardMult);
+        BlockTypeData type = BlockConfigProvider.Config.GetTypeForBlock(spawnIndexCounter, seq);
+        float hp = activeLevel.blockHP;
+        int reward = 0;
 
         GameObject go = Instantiate(blockPrefabRoot, blockSlots[index]);
         go.name = "Block_" + type.id;
@@ -104,6 +90,9 @@ public class BlocksRowManager : MonoBehaviour
         block.Setup(type, hp, reward);
         block.OnDestroyed += OnBlockDestroyed;
         activeBlocks[index] = block;
+
+        spawnIndexCounter++;
+        remainingBlocksToSpawn--;
     }
 
     private void OnBlockDestroyed(Block block)
@@ -133,60 +122,13 @@ public class BlocksRowManager : MonoBehaviour
         if (HapticManager.Instance != null) HapticManager.Instance.Medium();
         if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.blockExplode);
 
-        float rewardMult = BoosterManager.Instance != null ? BoosterManager.Instance.RewardsMultiplier : 1f;
-        int finalReward = Mathf.RoundToInt(block.RewardCoins * rewardMult);
-        SpawnCoinBurst(block.RectTransform.position, finalReward);
         totalDestroyed++;
         PlayerPrefs.SetInt(TOTAL_DESTROYED_KEY, totalDestroyed);
 
-        if (ChestManager.Instance != null) ChestManager.Instance.RegisterBlockDestroyed();
-
+        if (LevelManager.Instance != null) LevelManager.Instance.NotifyBlockDestroyed();
         if (AchievementManager.Instance != null) AchievementManager.Instance.CheckAll();
 
         DOVirtual.DelayedCall(respawnDelay, () => SpawnBlockAt(index));
-    }
-
-    private void SpawnCoinBurst(Vector3 worldPos, int totalReward)
-    {
-        if (coinBurstParticlePrefab == null || effectsLayer == null || coinsHudTarget == null)
-        {
-            if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddCoins(totalReward);
-            return;
-        }
-
-        int n = coinsBurstCount;
-        int per = Mathf.Max(1, totalReward / n);
-        int remainder = totalReward - per * n;
-
-        for (int i = 0; i < n; i++)
-        {
-            GameObject coin = Instantiate(coinBurstParticlePrefab, effectsLayer);
-            coin.SetActive(true);
-            RectTransform crt = coin.transform as RectTransform;
-            crt.position = worldPos;
-
-            int amount = per + (i == n - 1 ? remainder : 0);
-            float delay = i * 0.04f;
-
-            Vector2 randomOffset = Random.insideUnitCircle * 120f;
-            randomOffset.y = Mathf.Abs(randomOffset.y) + 60f;
-            Vector3 burstTarget = worldPos + (Vector3)randomOffset;
-
-            Sequence seq = DOTween.Sequence();
-            seq.AppendInterval(delay);
-            seq.Append(crt.DOMove(burstTarget, 0.25f).SetEase(Ease.OutQuad));
-            seq.Join(crt.DOScale(1.3f, 0.25f).SetEase(Ease.OutQuad));
-            seq.AppendInterval(0.05f);
-            seq.Append(crt.DOMove(coinsHudTarget.position, 0.45f).SetEase(Ease.InQuad));
-            seq.Join(crt.DOScale(0.8f, 0.45f).SetEase(Ease.InQuad));
-            seq.AppendCallback(() =>
-            {
-                if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddCoins(amount);
-                if (HapticManager.Instance != null && amount == per + remainder) HapticManager.Instance.Light();
-                if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.coinTick, 0.35f, Random.Range(0.9f, 1.15f));
-                Destroy(coin);
-            });
-        }
     }
 
     public Block GetRandomAliveBlock()

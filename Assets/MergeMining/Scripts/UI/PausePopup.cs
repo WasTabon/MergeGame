@@ -40,16 +40,16 @@ public class PausePopup : BasePopup
     private void OnMainMenu()
     {
         confirmPopup.Setup(
-            "QUIT TO MENU?",
-            "Your progress is saved.",
+            "QUIT LEVEL?",
+            "Progress on this level will be lost.",
             "CANCEL",
             "QUIT",
             UIColors.RED,
             () =>
             {
                 Time.timeScale = 1f;
-                if (TransitionManager.Instance != null)
-                    TransitionManager.Instance.LoadScene("MainMenu");
+                if (LevelManager.Instance != null) LevelManager.Instance.GoToLevelSelect();
+                else if (TransitionManager.Instance != null) TransitionManager.Instance.LoadScene("LevelSelect");
             }
         );
         confirmPopup.Show();

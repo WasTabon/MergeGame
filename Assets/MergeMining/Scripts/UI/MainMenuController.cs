@@ -15,7 +15,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnPlayClicked()
     {
-        TransitionManager.Instance.LoadScene("Game");
+        TransitionManager.Instance.LoadScene("LevelSelect");
     }
 
     private void OnSettingsClicked()

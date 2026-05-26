@@ -76,7 +76,12 @@ public class PickaxeDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
         if (!targetSlot.IsEmpty)
         {
             Pickaxe targetPickaxe = targetSlot.CurrentPickaxe;
-            if (targetPickaxe.Level == pickaxe.Level && pickaxe.Level < PickaxeConfigProvider.Config.MaxLevel)
+            int cap = PickaxeConfigProvider.Config.MaxLevel;
+            if (LevelManager.Instance != null && LevelManager.Instance.CurrentLevel != null)
+            {
+                cap = Mathf.Min(cap, LevelManager.Instance.CurrentLevel.maxPickaxeLevel);
+            }
+            if (targetPickaxe.Level == pickaxe.Level && pickaxe.Level < cap)
             {
                 PickaxeGridManager.Instance.DoMerge(pickaxe, targetPickaxe);
                 return;

@@ -37,10 +37,20 @@ public class PickaxeGridManager : MonoBehaviour
 
     private void Start()
     {
-        if (!TryLoadGrid())
+        ClearGridSilent();
+    }
+
+    private void ClearGridSilent()
+    {
+        foreach (var s in slots)
         {
-            SpawnInitialIfEmpty();
+            if (!s.IsEmpty && s.CurrentPickaxe != null)
+            {
+                Destroy(s.CurrentPickaxe.gameObject);
+                s.Clear();
+            }
         }
+        UpdateMaxLevel();
     }
 
     private bool TryLoadGrid()
@@ -199,7 +209,7 @@ public class PickaxeGridManager : MonoBehaviour
                     PlayerPrefs.SetInt(HIGHEST_REACHED_KEY, HighestEverReached);
                 }
 
-                if (ZoneManager.Instance != null)
+                if (ZoneManager.Instance != null && LevelManager.Instance == null)
                 {
                     ZoneManager.Instance.CheckUnlock(HighestEverReached);
                 }
@@ -233,6 +243,26 @@ public class PickaxeGridManager : MonoBehaviour
     }
 
     public int GetMaxLevelOnGrid() => MaxLevelOnGrid;
+
+    public int CountAlive()
+    {
+        int n = 0;
+        foreach (var s in slots) if (!s.IsEmpty) n++;
+        return n;
+    }
+
+    public void ClearGridAndSave()
+    {
+        foreach (var s in slots)
+        {
+            if (!s.IsEmpty && s.CurrentPickaxe != null)
+            {
+                Destroy(s.CurrentPickaxe.gameObject);
+                s.Clear();
+            }
+        }
+        PlayerPrefs.DeleteKey(GRID_SAVE_KEY);
+    }
 
     public bool TryAutoMergeOneRandom()
     {

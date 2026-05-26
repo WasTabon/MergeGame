@@ -8,17 +8,8 @@ public class ShopController : MonoBehaviour
     [SerializeField] private Button shopButton;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private RectTransform priceIcon;
-    [SerializeField] private int basePrice = 10;
-    [SerializeField] private float priceMultiplier = 1.15f;
-
-    private const string PICKAXES_BOUGHT_KEY = "pickaxes_bought";
 
     private int pickaxesBought = 0;
-
-    private void Awake()
-    {
-        pickaxesBought = PlayerPrefs.GetInt(PICKAXES_BOUGHT_KEY, 0);
-    }
 
     private void OnEnable()
     {
@@ -45,24 +36,26 @@ public class ShopController : MonoBehaviour
             CurrencyManager.Instance.OnCoinsChanged -= OnCoinsChanged;
             CurrencyManager.Instance.OnCoinsChanged += OnCoinsChanged;
         }
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.OnPhaseChanged -= OnPhaseChanged;
+            LevelManager.Instance.OnPhaseChanged += OnPhaseChanged;
+        }
     }
 
     private void UnsubscribeFromEvents()
     {
-        if (CurrencyManager.Instance != null)
-        {
-            CurrencyManager.Instance.OnCoinsChanged -= OnCoinsChanged;
-        }
+        if (CurrencyManager.Instance != null) CurrencyManager.Instance.OnCoinsChanged -= OnCoinsChanged;
+        if (LevelManager.Instance != null) LevelManager.Instance.OnPhaseChanged -= OnPhaseChanged;
     }
 
-    private void OnCoinsChanged(int v)
-    {
-        RefreshInteractable();
-    }
+    private void OnCoinsChanged(int v) { RefreshInteractable(); }
+    private void OnPhaseChanged(LevelPhase phase) { RefreshInteractable(); }
 
     private int GetCurrentPrice()
     {
-        return Mathf.RoundToInt(basePrice * Mathf.Pow(priceMultiplier, pickaxesBought));
+        if (LevelManager.Instance != null) return LevelManager.Instance.GetPickaxeBaseCost();
+        return LevelConfigProvider.Config != null ? LevelConfigProvider.Config.pickaxeBaseCost : 10;
     }
 
     private void UpdatePriceLabel()
@@ -74,7 +67,8 @@ public class ShopController : MonoBehaviour
     {
         bool canAfford = CurrencyManager.Instance != null && CurrencyManager.Instance.CanAfford(GetCurrentPrice());
         bool hasSlot = PickaxeGridManager.Instance != null && PickaxeGridManager.Instance.HasFreeSlot();
-        shopButton.interactable = canAfford && hasSlot;
+        bool isSetup = LevelManager.Instance == null || LevelManager.Instance.Phase == LevelPhase.Setup;
+        shopButton.interactable = canAfford && hasSlot && isSetup;
     }
 
     private void OnShopClicked()
@@ -83,14 +77,9 @@ public class ShopController : MonoBehaviour
         if (CurrencyManager.Instance == null || !CurrencyManager.Instance.SpendCoins(price)) return;
         if (PickaxeGridManager.Instance == null || !PickaxeGridManager.Instance.HasFreeSlot()) return;
 
-        int level = GetRandomPurchaseLevel();
-        PickaxeGridManager.Instance.AddPickaxe(level);
-
+        PickaxeGridManager.Instance.AddPickaxe(1);
         pickaxesBought++;
-        PlayerPrefs.SetInt(PICKAXES_BOUGHT_KEY, pickaxesBought);
         UpdatePriceLabel();
-
-        if (TutorialManager.Instance != null) TutorialManager.Instance.NotifyShopPurchase();
 
         if (priceIcon != null)
         {
@@ -100,15 +89,8 @@ public class ShopController : MonoBehaviour
         }
 
         if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.shopBuy);
+        if (LevelManager.Instance != null) LevelManager.Instance.NotifyCoinsSpent(price);
 
         RefreshInteractable();
-    }
-
-    private int GetRandomPurchaseLevel()
-    {
-        int highest = PickaxeGridManager.Instance.HighestEverReached;
-        int cap = Mathf.Max(1, highest - 3);
-        int min = 1;
-        return Random.Range(min, cap + 1);
     }
 }

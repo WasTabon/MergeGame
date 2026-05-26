@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MergeMining/Scenes/Game.unity
     guid: 53084c9b173401b428f70097002307c4
+  - enabled: 1
+    path: Assets/MergeMining/Scenes/LevelSelect.unity
+    guid: 2d396c43597ffbf4e93e0ff95753eedf
   m_configObjects: {}
