@@ -60,6 +60,6 @@ public class PickaxeMiningBehaviour : MonoBehaviour
         MiningAttack attack = go.GetComponent<MiningAttack>();
         if (attack == null) { Destroy(go); return; }
 
-        attack.Launch(pickaxe.RectTransform.position, target, data.damage, data.color);
+        attack.Launch(pickaxe.RectTransform.position, target, data.damage, data.color, pickaxe.Level);
     }
 }

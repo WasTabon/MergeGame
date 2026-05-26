@@ -1,6 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BlockBehavior
+{
+    Normal,
+    Iron,
+    Diamond,
+    Explosive,
+    Healer
+}
+
 [System.Serializable]
 public class BlockTypeData
 {
@@ -10,6 +19,12 @@ public class BlockTypeData
     public Color darkColor = new Color(0.3f, 0.3f, 0.3f);
     public float hpMultiplier = 1f;
     public float rewardMultiplier = 1f;
+    public BlockBehavior behavior = BlockBehavior.Normal;
+    public int minPickaxeLevel = 1;
+    public float damageMultiplier = 1f;
+    public float explosionDamage = 5f;
+    public float healPerSecond = 0f;
+    public float healInterval = 2f;
 }
 
 [CreateAssetMenu(menuName = "MergeMining/BlockConfig", fileName = "BlockConfig")]

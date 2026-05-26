@@ -10,6 +10,7 @@ public class MiningAttack : MonoBehaviour
     private RectTransform rt;
     private Block targetBlock;
     private float damage;
+    private int sourcePickaxeLevel;
 
     private void Awake()
     {
@@ -18,8 +19,14 @@ public class MiningAttack : MonoBehaviour
 
     public void Launch(Vector3 startWorldPos, Block target, float dmg, Color tint)
     {
+        Launch(startWorldPos, target, dmg, tint, 1);
+    }
+
+    public void Launch(Vector3 startWorldPos, Block target, float dmg, Color tint, int pickaxeLevel)
+    {
         targetBlock = target;
         damage = dmg;
+        sourcePickaxeLevel = pickaxeLevel;
 
         rt.position = startWorldPos;
         rt.localScale = Vector3.one * 0.6f;
@@ -49,7 +56,7 @@ public class MiningAttack : MonoBehaviour
     {
         if (targetBlock != null && targetBlock.IsAlive)
         {
-            targetBlock.TakeDamage(damage);
+            targetBlock.TakeDamage(damage, sourcePickaxeLevel);
             if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.miningHit, 0.6f, Random.Range(0.85f, 1.15f));
         }
 

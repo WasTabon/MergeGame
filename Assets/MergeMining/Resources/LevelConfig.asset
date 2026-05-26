@@ -18,11 +18,11 @@ MonoBehaviour:
     startingCoins: 30
     maxPickaxeLevel: 2
     blockHP: 12
-    blockSequence: 00000000
+    blockSequence: 00000000000000000200000000000000
     zoneId: stone_cave
     gemsReward: 1
     timeLimitSeconds: 60
-    blockDescendSpeed: 0
+    blockDescendSpeed: 8
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 2
@@ -30,11 +30,11 @@ MonoBehaviour:
     startingCoins: 40
     maxPickaxeLevel: 2
     blockHP: 16
-    blockSequence: 00000000
+    blockSequence: 0000000002000000000000000300000000000000
     zoneId: stone_cave
     gemsReward: 1
     timeLimitSeconds: 65
-    blockDescendSpeed: 0
+    blockDescendSpeed: 10
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 3
@@ -42,11 +42,11 @@ MonoBehaviour:
     startingCoins: 50
     maxPickaxeLevel: 3
     blockHP: 22
-    blockSequence: 00000000
+    blockSequence: 0000000001000000020000000000000004000000
     zoneId: stone_cave
     gemsReward: 2
     timeLimitSeconds: 70
-    blockDescendSpeed: 8
+    blockDescendSpeed: 12
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 4
@@ -54,11 +54,11 @@ MonoBehaviour:
     startingCoins: 60
     maxPickaxeLevel: 3
     blockHP: 30
-    blockSequence: 00000000
+    blockSequence: 000000000300000001000000000000000200000004000000
     zoneId: stone_cave
     gemsReward: 2
     timeLimitSeconds: 75
-    blockDescendSpeed: 10
+    blockDescendSpeed: 14
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 5
@@ -66,11 +66,11 @@ MonoBehaviour:
     startingCoins: 80
     maxPickaxeLevel: 4
     blockHP: 45
-    blockSequence: 00000000
+    blockSequence: 010000000000000004000000020000000300000000000000
     zoneId: stone_cave
     gemsReward: 3
     timeLimitSeconds: 85
-    blockDescendSpeed: 14
+    blockDescendSpeed: 18
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 6
@@ -78,11 +78,11 @@ MonoBehaviour:
     startingCoins: 100
     maxPickaxeLevel: 4
     blockHP: 65
-    blockSequence: 00000000
+    blockSequence: 000000000100000003000000040000000200000001000000
     zoneId: stone_cave
     gemsReward: 3
     timeLimitSeconds: 95
-    blockDescendSpeed: 18
+    blockDescendSpeed: 22
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 7
@@ -90,11 +90,11 @@ MonoBehaviour:
     startingCoins: 120
     maxPickaxeLevel: 5
     blockHP: 95
-    blockSequence: 00000000
+    blockSequence: 04000000010000000000000003000000020000000100000004000000
     zoneId: stone_cave
     gemsReward: 4
     timeLimitSeconds: 105
-    blockDescendSpeed: 22
+    blockDescendSpeed: 26
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 8
@@ -102,11 +102,11 @@ MonoBehaviour:
     startingCoins: 140
     maxPickaxeLevel: 5
     blockHP: 140
-    blockSequence: 00000000
+    blockSequence: 01000000030000000400000000000000020000000100000003000000
     zoneId: stone_cave
     gemsReward: 4
     timeLimitSeconds: 115
-    blockDescendSpeed: 25
+    blockDescendSpeed: 30
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 9
@@ -114,11 +114,11 @@ MonoBehaviour:
     startingCoins: 170
     maxPickaxeLevel: 6
     blockHP: 200
-    blockSequence: 00000000
+    blockSequence: 0100000004000000030000000200000001000000000000000400000003000000
     zoneId: stone_cave
     gemsReward: 5
     timeLimitSeconds: 125
-    blockDescendSpeed: 28
+    blockDescendSpeed: 33
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 10
@@ -126,11 +126,11 @@ MonoBehaviour:
     startingCoins: 200
     maxPickaxeLevel: 7
     blockHP: 280
-    blockSequence: 00000000
+    blockSequence: 0200000001000000040000000300000001000000040000000000000002000000
     zoneId: stone_cave
     gemsReward: 5
     timeLimitSeconds: 135
-    blockDescendSpeed: 30
+    blockDescendSpeed: 35
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 11
@@ -138,11 +138,11 @@ MonoBehaviour:
     startingCoins: 240
     maxPickaxeLevel: 8
     blockHP: 400
-    blockSequence: 00000000
+    blockSequence: 0300000001000000040000000200000001000000030000000400000001000000
     zoneId: stone_cave
     gemsReward: 6
     timeLimitSeconds: 145
-    blockDescendSpeed: 32
+    blockDescendSpeed: 38
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 12
@@ -150,11 +150,11 @@ MonoBehaviour:
     startingCoins: 280
     maxPickaxeLevel: 9
     blockHP: 580
-    blockSequence: 00000000
+    blockSequence: 010000000300000004000000020000000100000004000000030000000200000001000000
     zoneId: stone_cave
     gemsReward: 7
     timeLimitSeconds: 155
-    blockDescendSpeed: 33
+    blockDescendSpeed: 40
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 13
@@ -162,11 +162,11 @@ MonoBehaviour:
     startingCoins: 320
     maxPickaxeLevel: 10
     blockHP: 850
-    blockSequence: 00000000
+    blockSequence: 040000000100000003000000020000000100000004000000030000000100000002000000
     zoneId: stone_cave
     gemsReward: 8
     timeLimitSeconds: 165
-    blockDescendSpeed: 34
+    blockDescendSpeed: 42
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 14
@@ -174,11 +174,11 @@ MonoBehaviour:
     startingCoins: 380
     maxPickaxeLevel: 12
     blockHP: 1200
-    blockSequence: 00000000
+    blockSequence: 01000000040000000300000002000000010000000300000004000000020000000100000003000000
     zoneId: stone_cave
     gemsReward: 10
     timeLimitSeconds: 175
-    blockDescendSpeed: 35
+    blockDescendSpeed: 44
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   - levelNumber: 15
@@ -186,11 +186,11 @@ MonoBehaviour:
     startingCoins: 450
     maxPickaxeLevel: 15
     blockHP: 2000
-    blockSequence: 00000000
+    blockSequence: 0300000004000000010000000200000004000000010000000300000002000000010000000400000003000000
     zoneId: stone_cave
     gemsReward: 15
     timeLimitSeconds: 180
-    blockDescendSpeed: 35
+    blockDescendSpeed: 45
     blockRegenDelay: 1.5
     blockRegenPerSec: 0.05
   pickaxeBaseCost: 10

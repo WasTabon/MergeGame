@@ -15,28 +15,64 @@ MonoBehaviour:
   types:
   - id: stone
     displayName: Stone
-    color: {r: 0.55, g: 0.55, b: 0.6, a: 1}
-    darkColor: {r: 0.35, g: 0.35, b: 0.4, a: 1}
+    color: {r: 0.62, g: 0.62, b: 0.65, a: 1}
+    darkColor: {r: 0.35, g: 0.35, b: 0.38, a: 1}
     hpMultiplier: 1
     rewardMultiplier: 1
+    behavior: 0
+    minPickaxeLevel: 1
+    damageMultiplier: 1
+    explosionDamage: 5
+    healPerSecond: 0
+    healInterval: 2
   - id: iron
     displayName: Iron
-    color: {r: 0.65, g: 0.45, b: 0.3, a: 1}
-    darkColor: {r: 0.4, g: 0.28, b: 0.18, a: 1}
-    hpMultiplier: 1.4
-    rewardMultiplier: 1.6
-  - id: gold
-    displayName: Gold
-    color: {r: 0.95, g: 0.78, b: 0.25, a: 1}
-    darkColor: {r: 0.7, g: 0.55, b: 0.15, a: 1}
-    hpMultiplier: 2
-    rewardMultiplier: 3
-  - id: crystal
-    displayName: Crystal
-    color: {r: 0.35, g: 0.78, b: 0.92, a: 1}
-    darkColor: {r: 0.18, g: 0.45, b: 0.7, a: 1}
-    hpMultiplier: 3
-    rewardMultiplier: 5
+    color: {r: 0.45, g: 0.45, b: 0.55, a: 1}
+    darkColor: {r: 0.25, g: 0.25, b: 0.3, a: 1}
+    hpMultiplier: 1.2
+    rewardMultiplier: 1.3
+    behavior: 1
+    minPickaxeLevel: 3
+    damageMultiplier: 1
+    explosionDamage: 5
+    healPerSecond: 0
+    healInterval: 2
+  - id: diamond
+    displayName: Diamond
+    color: {r: 0.55, g: 0.85, b: 0.95, a: 1}
+    darkColor: {r: 0.3, g: 0.6, b: 0.7, a: 1}
+    hpMultiplier: 0.9
+    rewardMultiplier: 2
+    behavior: 2
+    minPickaxeLevel: 1
+    damageMultiplier: 0.5
+    explosionDamage: 5
+    healPerSecond: 0
+    healInterval: 2
+  - id: explosive
+    displayName: Explosive
+    color: {r: 0.9, g: 0.3, b: 0.25, a: 1}
+    darkColor: {r: 0.5, g: 0.15, b: 0.1, a: 1}
+    hpMultiplier: 0.7
+    rewardMultiplier: 1.5
+    behavior: 3
+    minPickaxeLevel: 1
+    damageMultiplier: 1
+    explosionDamage: 5
+    healPerSecond: 0
+    healInterval: 2
+  - id: healer
+    displayName: Healer
+    color: {r: 0.45, g: 0.85, b: 0.4, a: 1}
+    darkColor: {r: 0.25, g: 0.5, b: 0.2, a: 1}
+    hpMultiplier: 0.8
+    rewardMultiplier: 1.2
+    behavior: 4
+    minPickaxeLevel: 1
+    damageMultiplier: 1
+    explosionDamage: 5
+    healPerSecond: 4
+    healInterval: 2
   defaultSequence: 
   baseHP: 10
   hpGrowth: 1.18
