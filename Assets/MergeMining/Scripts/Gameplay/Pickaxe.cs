@@ -24,7 +24,12 @@ public class Pickaxe : MonoBehaviour
         PickaxeLevelData data = PickaxeConfigProvider.Config.GetLevel(Level);
         if (data != null)
         {
-            MaxDurability = Mathf.Max(1, data.durability);
+            float durMult = 1f;
+            if (LevelManager.Instance != null && LevelManager.Instance.ActiveModifier != null)
+            {
+                durMult = LevelManager.Instance.ActiveModifier.DurabilityMultiplier;
+            }
+            MaxDurability = Mathf.Max(1, Mathf.RoundToInt(data.durability * durMult));
             RemainingDurability = MaxDurability;
         }
         UpdateDurabilityBar();

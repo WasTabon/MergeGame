@@ -43,6 +43,10 @@ public class PickaxeMiningBehaviour : MonoBehaviour
         pickaxe.ConsumeDurability();
 
         float speedMult = BoosterManager.Instance != null ? BoosterManager.Instance.SpeedMultiplier : 1f;
+        if (LevelManager.Instance != null && LevelManager.Instance.ActiveModifier != null)
+        {
+            speedMult *= LevelManager.Instance.ActiveModifier.PickaxeSpeedMultiplier;
+        }
         float interval = 1f / (Mathf.Max(0.1f, data.miningSpeed) * speedMult);
         nextAttackTime = Time.time + interval;
     }
@@ -60,6 +64,12 @@ public class PickaxeMiningBehaviour : MonoBehaviour
         MiningAttack attack = go.GetComponent<MiningAttack>();
         if (attack == null) { Destroy(go); return; }
 
-        attack.Launch(pickaxe.RectTransform.position, target, data.damage, data.color, pickaxe.Level);
+        float damageOut = data.damage;
+        if (LevelManager.Instance != null && LevelManager.Instance.ActiveModifier != null)
+        {
+            damageOut *= LevelManager.Instance.ActiveModifier.DamageMultiplier;
+        }
+
+        attack.Launch(pickaxe.RectTransform.position, target, damageOut, data.color, pickaxe.Level);
     }
 }

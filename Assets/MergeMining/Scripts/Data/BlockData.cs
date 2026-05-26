@@ -25,6 +25,12 @@ public class BlockTypeData
     public float explosionDamage = 5f;
     public float healPerSecond = 0f;
     public float healInterval = 2f;
+    public float armor = 0f;
+    public float innerHPMultiplier = 0f;
+    public float shellRegenPerSec = 0.4f;
+    public bool isBoss = false;
+    public float bossCounterAttackInterval = 6f;
+    public float bossSizeMultiplier = 1.6f;
 }
 
 [CreateAssetMenu(menuName = "MergeMining/BlockConfig", fileName = "BlockConfig")]

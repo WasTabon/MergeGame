@@ -23,12 +23,17 @@ public class Block : MonoBehaviour, IPointerClickHandler
 
     private bool isDying = false;
     private Vector3 originalScale;
+    private Vector3 currentScale;
     private float lastDamageTime;
     private float regenDelay = 1.5f;
     private float regenPerSec = 0f;
     private float descendSpeed = 0f;
     private float dangerY = float.NegativeInfinity;
     private bool reachedBottom = false;
+    private bool shellActive = false;
+    private float shellHP = 0f;
+    private float shellMaxHP = 0f;
+    private float lastBossAttackTime = 0f;
 
     private void Awake()
     {
@@ -67,7 +72,19 @@ public class Block : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        if (regenPerSec > 0f && CurrentHP < MaxHP)
+        bool didShellRegen = false;
+        if (TypeData != null && TypeData.innerHPMultiplier > 0f && !shellActive && CurrentHP < MaxHP)
+        {
+            if (Time.time - lastDamageTime >= 0.6f)
+            {
+                CurrentHP += MaxHP * TypeData.shellRegenPerSec * Time.deltaTime;
+                if (CurrentHP > MaxHP) CurrentHP = MaxHP;
+                if (hpBar != null) hpBar.AnimateTo(CurrentHP / MaxHP, 0.1f);
+                didShellRegen = true;
+            }
+        }
+
+        if (!didShellRegen && regenPerSec > 0f && CurrentHP < MaxHP && !shellActive)
         {
             if (Time.time - lastDamageTime >= regenDelay)
             {
@@ -85,6 +102,66 @@ public class Block : MonoBehaviour, IPointerClickHandler
                 HealNeighbors();
             }
         }
+
+        if (TypeData != null && TypeData.isBoss && TypeData.bossCounterAttackInterval > 0f)
+        {
+            if (Time.time - lastBossAttackTime >= TypeData.bossCounterAttackInterval)
+            {
+                lastBossAttackTime = Time.time;
+                BossCounterAttack();
+            }
+        }
+    }
+
+    private void BossCounterAttack()
+    {
+        if (PickaxeGridManager.Instance == null) return;
+        var pickaxes = UnityEngine.Object.FindObjectsOfType<Pickaxe>();
+        if (pickaxes == null || pickaxes.Length == 0) return;
+
+        Pickaxe weakest = null;
+        int lowestLevel = int.MaxValue;
+        foreach (var p in pickaxes)
+        {
+            if (p == null) continue;
+            if (p.Level < lowestLevel)
+            {
+                lowestLevel = p.Level;
+                weakest = p;
+            }
+        }
+        if (weakest == null) return;
+
+        if (bodyImage != null)
+        {
+            Color orig = TypeData.color;
+            bodyImage.DOKill();
+            bodyImage.color = Color.red;
+            bodyImage.DOColor(orig, 0.5f);
+        }
+        transform.DOKill(true);
+        transform.localScale = currentScale;
+        transform.DOPunchScale(currentScale * 0.2f, 0.4f, 8, 0.5f);
+
+        Camera cam = Camera.main;
+        if (cam != null)
+        {
+            cam.transform.DOKill();
+            cam.transform.DOShakePosition(0.4f, 0.3f, 10, 90f);
+        }
+        if (HapticManager.Instance != null) HapticManager.Instance.Heavy();
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.blockExplode, 1.2f, 0.65f);
+
+        Pickaxe slotPickaxe = weakest;
+        slotPickaxe.transform.DOKill();
+        slotPickaxe.transform.DOScale(0f, 0.35f).SetEase(Ease.InBack)
+            .OnComplete(() =>
+            {
+                if (slotPickaxe == null) return;
+                if (slotPickaxe.CurrentSlot != null) slotPickaxe.CurrentSlot.Clear();
+                Destroy(slotPickaxe.gameObject);
+                if (PickaxeGridManager.Instance != null) PickaxeGridManager.Instance.NotifyPickaxeBroken();
+            });
     }
 
     private void HealNeighbors()
@@ -136,14 +213,34 @@ public class Block : MonoBehaviour, IPointerClickHandler
         RewardCoins = reward;
         isDying = false;
 
+        shellActive = false;
+        shellHP = 0f;
+        shellMaxHP = 0f;
+        if (type != null && type.innerHPMultiplier > 0f)
+        {
+            shellActive = true;
+            shellMaxHP = maxHP;
+            shellHP = maxHP;
+            MaxHP = maxHP * type.innerHPMultiplier;
+            CurrentHP = MaxHP;
+        }
+
         bodyImage.color = type.color;
         if (highlightImage != null) highlightImage.color = new Color(1f, 1f, 1f, 0.15f);
         if (nameText != null) nameText.text = type.displayName.ToUpper();
 
         if (hpBar != null) hpBar.SetImmediate(1f);
 
+        Vector3 finalScale = originalScale;
+        if (type != null && type.isBoss)
+        {
+            finalScale = originalScale * type.bossSizeMultiplier;
+        }
+        currentScale = finalScale;
         transform.localScale = Vector3.zero;
-        transform.DOScale(originalScale, 0.35f).SetEase(Ease.OutBack);
+        transform.DOScale(finalScale, 0.45f).SetEase(Ease.OutBack);
+
+        lastBossAttackTime = Time.time;
     }
 
     public void TakeDamage(float dmg)
@@ -164,15 +261,37 @@ public class Block : MonoBehaviour, IPointerClickHandler
         float finalDmg = dmg;
         if (TypeData != null) finalDmg *= TypeData.damageMultiplier;
 
+        if (TypeData != null && TypeData.armor > 0f)
+        {
+            finalDmg = Mathf.Max(0.5f, finalDmg - TypeData.armor);
+        }
+
+        if (shellActive)
+        {
+            shellHP -= finalDmg;
+            if (shellHP < 0f) shellHP = 0f;
+            lastDamageTime = Time.time;
+            if (hpBar != null) hpBar.AnimateTo(shellHP / shellMaxHP, 0.2f);
+            DoDamageVfx();
+            if (shellHP <= 0f) BreakShell();
+            return;
+        }
+
         CurrentHP -= finalDmg;
         if (CurrentHP < 0f) CurrentHP = 0f;
         lastDamageTime = Time.time;
 
         if (hpBar != null) hpBar.AnimateTo(CurrentHP / MaxHP, 0.2f);
+        DoDamageVfx();
 
+        if (CurrentHP <= 0f) Die();
+    }
+
+    private void DoDamageVfx()
+    {
         transform.DOKill(true);
-        transform.localScale = originalScale;
-        transform.DOPunchScale(originalScale * 0.08f, 0.18f, 6, 0.5f);
+        transform.localScale = currentScale;
+        transform.DOPunchScale(currentScale * 0.08f, 0.18f, 6, 0.5f);
 
         Camera cam = Camera.main;
         if (cam != null)
@@ -180,8 +299,18 @@ public class Block : MonoBehaviour, IPointerClickHandler
             cam.transform.DOKill();
             cam.transform.DOShakePosition(0.1f, 0.06f, 8, 90f);
         }
+    }
 
-        if (CurrentHP <= 0f) Die();
+    private void BreakShell()
+    {
+        shellActive = false;
+        if (bodyImage != null)
+        {
+            bodyImage.DOKill();
+            bodyImage.DOColor(TypeData.darkColor, 0.3f);
+        }
+        if (hpBar != null) hpBar.SetImmediate(CurrentHP / MaxHP);
+        if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.blockExplode, 0.7f, 1.2f);
     }
 
     private void ShowImmuneFlash()
@@ -192,7 +321,7 @@ public class Block : MonoBehaviour, IPointerClickHandler
         bodyImage.color = Color.white;
         bodyImage.DOColor(orig, 0.25f);
         transform.DOKill(true);
-        transform.localScale = originalScale;
+        transform.localScale = currentScale;
         transform.DOPunchPosition(new Vector3(8f, 0f, 0f), 0.18f, 8, 0.5f);
     }
 
@@ -207,8 +336,8 @@ public class Block : MonoBehaviour, IPointerClickHandler
         if (TutorialManager.Instance != null) TutorialManager.Instance.NotifyBlockTapped();
 
         transform.DOKill(true);
-        transform.localScale = originalScale;
-        transform.DOPunchScale(originalScale * 0.12f, 0.15f, 6, 0.5f);
+        transform.localScale = currentScale;
+        transform.DOPunchScale(currentScale * 0.12f, 0.15f, 6, 0.5f);
     }
 
     private void Die()

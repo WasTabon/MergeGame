@@ -80,6 +80,8 @@ public class PickaxeDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
             if (LevelManager.Instance != null && LevelManager.Instance.CurrentLevel != null)
             {
                 cap = Mathf.Min(cap, LevelManager.Instance.CurrentLevel.maxPickaxeLevel);
+                if (LevelManager.Instance.ActiveModifier != null) cap += LevelManager.Instance.ActiveModifier.MaxLevelOffset;
+                if (cap < 1) cap = 1;
             }
             if (targetPickaxe.Level == pickaxe.Level && pickaxe.Level < cap)
             {

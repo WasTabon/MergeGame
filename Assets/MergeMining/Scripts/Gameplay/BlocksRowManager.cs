@@ -73,7 +73,11 @@ public class BlocksRowManager : MonoBehaviour
         if (seq == null || seq.Count == 0) seq = new List<int> { 0 };
 
         BlockTypeData type = BlockConfigProvider.Config.GetTypeForBlock(spawnIndexCounter, seq);
-        float hp = activeLevel.blockHP;
+        float hp = activeLevel.blockHP * (type != null ? type.hpMultiplier : 1f);
+        if (LevelManager.Instance != null && LevelManager.Instance.ActiveModifier != null)
+        {
+            hp *= LevelManager.Instance.ActiveModifier.BlockHPMultiplier;
+        }
         int reward = 0;
 
         GameObject go = Instantiate(blockPrefabRoot, blockSlots[index]);
@@ -89,10 +93,16 @@ public class BlocksRowManager : MonoBehaviour
         Block block = go.GetComponent<Block>();
         block.Setup(type, hp, reward);
         block.SetRegen(activeLevel.blockRegenDelay, activeLevel.blockRegenPerSec);
-        if (activeLevel.blockDescendSpeed > 0f && PickaxeGridManager.Instance != null && PickaxeGridManager.Instance.DragLayer != null)
+
+        float descendSpeed = activeLevel.blockDescendSpeed;
+        if (LevelManager.Instance != null && LevelManager.Instance.ActiveModifier != null)
+        {
+            descendSpeed *= LevelManager.Instance.ActiveModifier.DescendSpeedMultiplier;
+        }
+        if (descendSpeed > 0f && PickaxeGridManager.Instance != null && PickaxeGridManager.Instance.DragLayer != null)
         {
             float dangerY = ComputeDangerLineY();
-            block.SetDescend(activeLevel.blockDescendSpeed, dangerY);
+            block.SetDescend(descendSpeed, dangerY);
         }
         block.OnDestroyed += OnBlockDestroyed;
         activeBlocks[index] = block;

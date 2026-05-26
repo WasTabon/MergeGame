@@ -274,6 +274,17 @@ public class PickaxeGridManager : MonoBehaviour
         }
     }
 
+    public void DisableLastNSlots(int n)
+    {
+        if (n <= 0) return;
+        int disabledCount = 0;
+        for (int i = slots.Count - 1; i >= 0 && disabledCount < n; i--)
+        {
+            slots[i].gameObject.SetActive(false);
+            disabledCount++;
+        }
+    }
+
     public bool TryAutoMergeOneRandom()
     {
         List<Pickaxe> allPickaxes = new List<Pickaxe>();

@@ -25,6 +25,12 @@ MonoBehaviour:
     explosionDamage: 5
     healPerSecond: 0
     healInterval: 2
+    armor: 0
+    innerHPMultiplier: 0
+    shellRegenPerSec: 0.4
+    isBoss: 0
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
   - id: iron
     displayName: Iron
     color: {r: 0.45, g: 0.45, b: 0.55, a: 1}
@@ -37,6 +43,12 @@ MonoBehaviour:
     explosionDamage: 5
     healPerSecond: 0
     healInterval: 2
+    armor: 0
+    innerHPMultiplier: 0
+    shellRegenPerSec: 0.4
+    isBoss: 0
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
   - id: diamond
     displayName: Diamond
     color: {r: 0.55, g: 0.85, b: 0.95, a: 1}
@@ -49,6 +61,12 @@ MonoBehaviour:
     explosionDamage: 5
     healPerSecond: 0
     healInterval: 2
+    armor: 0
+    innerHPMultiplier: 0
+    shellRegenPerSec: 0.4
+    isBoss: 0
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
   - id: explosive
     displayName: Explosive
     color: {r: 0.9, g: 0.3, b: 0.25, a: 1}
@@ -61,6 +79,12 @@ MonoBehaviour:
     explosionDamage: 5
     healPerSecond: 0
     healInterval: 2
+    armor: 0
+    innerHPMultiplier: 0
+    shellRegenPerSec: 0.4
+    isBoss: 0
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
   - id: healer
     displayName: Healer
     color: {r: 0.45, g: 0.85, b: 0.4, a: 1}
@@ -73,6 +97,66 @@ MonoBehaviour:
     explosionDamage: 5
     healPerSecond: 4
     healInterval: 2
+    armor: 0
+    innerHPMultiplier: 0
+    shellRegenPerSec: 0.4
+    isBoss: 0
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
+  - id: armored
+    displayName: Armored
+    color: {r: 0.65, g: 0.55, b: 0.35, a: 1}
+    darkColor: {r: 0.4, g: 0.3, b: 0.15, a: 1}
+    hpMultiplier: 0.9
+    rewardMultiplier: 1.4
+    behavior: 0
+    minPickaxeLevel: 1
+    damageMultiplier: 1
+    explosionDamage: 5
+    healPerSecond: 0
+    healInterval: 2
+    armor: 3
+    innerHPMultiplier: 0
+    shellRegenPerSec: 0.4
+    isBoss: 0
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
+  - id: shell
+    displayName: Shell
+    color: {r: 0.85, g: 0.7, b: 0.55, a: 1}
+    darkColor: {r: 0.5, g: 0.4, b: 0.3, a: 1}
+    hpMultiplier: 0.6
+    rewardMultiplier: 1.8
+    behavior: 0
+    minPickaxeLevel: 1
+    damageMultiplier: 1
+    explosionDamage: 5
+    healPerSecond: 0
+    healInterval: 2
+    armor: 0
+    innerHPMultiplier: 0.8
+    shellRegenPerSec: 0.4
+    isBoss: 0
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
+  - id: boss
+    displayName: BOSS
+    color: {r: 0.55, g: 0.1, b: 0.45, a: 1}
+    darkColor: {r: 0.3, g: 0.05, b: 0.25, a: 1}
+    hpMultiplier: 5
+    rewardMultiplier: 4
+    behavior: 0
+    minPickaxeLevel: 1
+    damageMultiplier: 1
+    explosionDamage: 5
+    healPerSecond: 0
+    healInterval: 2
+    armor: 2
+    innerHPMultiplier: 0
+    shellRegenPerSec: 0.4
+    isBoss: 1
+    bossCounterAttackInterval: 6
+    bossSizeMultiplier: 1.6
   defaultSequence: 
   baseHP: 10
   hpGrowth: 1.18

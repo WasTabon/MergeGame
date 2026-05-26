@@ -17,6 +17,8 @@ public class LevelManager : MonoBehaviour
     public int CurrentLevelNumber { get; private set; }
     public LevelDefinition CurrentLevel { get; private set; }
     public LevelPhase Phase { get; private set; } = LevelPhase.Setup;
+    public ActiveLevelModifier ActiveModifier { get; private set; }
+    public bool SacrificeUsed { get; private set; } = false;
 
     public float TimeRemaining { get; private set; }
 
@@ -115,6 +117,35 @@ public class LevelManager : MonoBehaviour
         spentCoins += amount;
     }
 
+    public void ApplyModifier(LevelModifierDefinition def)
+    {
+        ActiveModifier = ActiveLevelModifier.FromDefinition(def);
+
+        if (CurrentLevel != null)
+        {
+            TimeRemaining = CurrentLevel.timeLimitSeconds + ActiveModifier.TimerOffset;
+            if (TimeRemaining < 10f) TimeRemaining = 10f;
+
+            if (ActiveModifier.StartingCoinsOffset != 0 && CurrencyManager.Instance != null)
+            {
+                CurrencyManager.Instance.AddCoins(ActiveModifier.StartingCoinsOffset);
+            }
+            if (ActiveModifier.SlotPenalty > 0 && PickaxeGridManager.Instance != null)
+            {
+                PickaxeGridManager.Instance.DisableLastNSlots(ActiveModifier.SlotPenalty);
+            }
+            if (ActiveModifier.FreePickaxes > 0 && PickaxeGridManager.Instance != null)
+            {
+                for (int i = 0; i < ActiveModifier.FreePickaxes; i++) PickaxeGridManager.Instance.AddPickaxe(1);
+            }
+        }
+    }
+
+    public void NotifySacrificeUsed()
+    {
+        SacrificeUsed = true;
+    }
+
     public int GetPickaxeBaseCost() => LevelConfigProvider.Config.pickaxeBaseCost;
 
     public int GetBlocksTotal() => CurrentLevel != null ? CurrentLevel.blocksToDestroy : 0;
@@ -148,10 +179,12 @@ public class LevelManager : MonoBehaviour
         if (nextLevel > LevelConfigProvider.Config.Count) nextLevel = LevelConfigProvider.Config.Count;
         PlayerPrefs.SetInt(CURRENT_LEVEL_KEY, nextLevel);
 
-        if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddGems(CurrentLevel.gemsReward);
+        int gemsToReward = CurrentLevel.gemsReward;
+        if (ActiveModifier != null) gemsToReward = Mathf.RoundToInt(gemsToReward * ActiveModifier.GemsRewardMultiplier);
+        if (CurrencyManager.Instance != null) CurrencyManager.Instance.AddGems(gemsToReward);
 
         OnPhaseChanged?.Invoke(Phase);
-        if (victoryPopup != null) victoryPopup.ShowVictory(CurrentLevelNumber, stars, CurrentLevel.gemsReward);
+        if (victoryPopup != null) victoryPopup.ShowVictory(CurrentLevelNumber, stars, gemsToReward);
     }
 
     private void FailLevel(LevelFailReason reason)
