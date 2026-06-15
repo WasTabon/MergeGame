@@ -134,7 +134,7 @@ public class Block : MonoBehaviour, IPointerClickHandler
 
         if (bodyImage != null)
         {
-            Color orig = TypeData.color;
+            Color orig = GetBodyTint();
             bodyImage.DOKill();
             bodyImage.color = Color.red;
             bodyImage.DOColor(orig, 0.5f);
@@ -190,7 +190,7 @@ public class Block : MonoBehaviour, IPointerClickHandler
     private void ShowHealPulse()
     {
         if (bodyImage == null) return;
-        Color orig = TypeData.color;
+        Color orig = GetBodyTint();
         bodyImage.DOKill();
         bodyImage.color = new Color(0.5f, 1f, 0.5f);
         bodyImage.DOColor(orig, 0.4f);
@@ -200,7 +200,7 @@ public class Block : MonoBehaviour, IPointerClickHandler
     {
         if (bodyImage == null) return;
         bodyImage.DOKill();
-        Color orig = TypeData != null ? TypeData.color : Color.white;
+        Color orig = GetBodyTint();
         bodyImage.color = new Color(0.7f, 1f, 0.7f);
         bodyImage.DOColor(orig, 0.3f);
     }
@@ -225,22 +225,33 @@ public class Block : MonoBehaviour, IPointerClickHandler
             CurrentHP = MaxHP;
         }
 
-        bodyImage.color = type.color;
+        if (type.spriteOverride != null)
+        {
+            bodyImage.sprite = type.spriteOverride;
+            bodyImage.color = Color.white;
+            bodyImage.preserveAspect = false;
+        }
+        else
+        {
+            bodyImage.color = type.color;
+        }
         if (highlightImage != null) highlightImage.color = new Color(1f, 1f, 1f, 0.15f);
         if (nameText != null) nameText.text = type.displayName.ToUpper();
 
         if (hpBar != null) hpBar.SetImmediate(1f);
 
-        Vector3 finalScale = originalScale;
-        if (type != null && type.isBoss)
-        {
-            finalScale = originalScale * type.bossSizeMultiplier;
-        }
-        currentScale = finalScale;
+        currentScale = originalScale;
         transform.localScale = Vector3.zero;
-        transform.DOScale(finalScale, 0.45f).SetEase(Ease.OutBack);
+        transform.DOScale(currentScale, 0.45f).SetEase(Ease.OutBack);
 
         lastBossAttackTime = Time.time;
+    }
+
+    private Color GetBodyTint()
+    {
+        if (TypeData == null) return Color.white;
+        if (TypeData.spriteOverride != null) return Color.white;
+        return TypeData.color;
     }
 
     public void TakeDamage(float dmg)
@@ -307,7 +318,10 @@ public class Block : MonoBehaviour, IPointerClickHandler
         if (bodyImage != null)
         {
             bodyImage.DOKill();
-            bodyImage.DOColor(TypeData.darkColor, 0.3f);
+            Color target = TypeData != null && TypeData.spriteOverride != null
+                ? new Color(0.7f, 0.7f, 0.7f, 1f)
+                : TypeData.darkColor;
+            bodyImage.DOColor(target, 0.3f);
         }
         if (hpBar != null) hpBar.SetImmediate(CurrentHP / MaxHP);
         if (SfxLibrary.Instance != null) SfxLibrary.Instance.Play(SfxLibrary.Instance.blockExplode, 0.7f, 1.2f);
@@ -317,7 +331,7 @@ public class Block : MonoBehaviour, IPointerClickHandler
     {
         if (bodyImage == null) return;
         bodyImage.DOKill();
-        Color orig = TypeData.color;
+        Color orig = GetBodyTint();
         bodyImage.color = Color.white;
         bodyImage.DOColor(orig, 0.25f);
         transform.DOKill(true);

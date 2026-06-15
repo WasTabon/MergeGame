@@ -75,7 +75,16 @@ public class Pickaxe : MonoBehaviour
         PickaxeLevelData data = PickaxeConfigProvider.Config.GetLevel(Level);
         if (data == null) return;
 
-        bodyImage.color = data.color;
+        if (data.spriteOverride != null)
+        {
+            bodyImage.sprite = data.spriteOverride;
+            bodyImage.color = Color.white;
+            bodyImage.preserveAspect = true;
+        }
+        else
+        {
+            bodyImage.color = data.color;
+        }
         levelText.text = Level.ToString();
 
         if (glowImage != null)

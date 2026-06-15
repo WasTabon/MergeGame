@@ -6,6 +6,7 @@ public class PickaxeLevelData
 {
     public int level;
     public Color color = Color.white;
+    public Sprite spriteOverride;
     public float damage = 1f;
     public float miningSpeed = 1f;
     public string displayName = "Pickaxe";

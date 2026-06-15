@@ -17,6 +17,7 @@ public class BlockTypeData
     public string displayName = "Stone";
     public Color color = Color.gray;
     public Color darkColor = new Color(0.3f, 0.3f, 0.3f);
+    public Sprite spriteOverride;
     public float hpMultiplier = 1f;
     public float rewardMultiplier = 1f;
     public BlockBehavior behavior = BlockBehavior.Normal;
