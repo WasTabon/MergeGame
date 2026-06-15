@@ -26,9 +26,9 @@ public class LevelSelectNodeView : MonoBehaviour
 
         if (button != null) button.interactable = unlocked;
 
-        Color completed = new Color(0.4f, 0.78f, 0.4f);
+        Color completed = new Color(1f,1f,1f);
         Color current = new Color(0.95f, 0.78f, 0.25f);
-        Color unlockedColor = new Color(0.55f, 0.565f, 0.886f);
+        Color unlockedColor = new Color(1f,1f,1f);
         Color locked = new Color(0.3f, 0.3f, 0.35f);
 
         if (circleBg != null)
